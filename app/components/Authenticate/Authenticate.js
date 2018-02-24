@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FacebookAuthButton, GoogleAuthButton } from 'components'
-import { centeredContainer, largeHeader, errorMsg } from 'shared/styles.css'
 
 Authenticate.propTypes = {
   isFetching: PropTypes.bool.isRequired,
@@ -15,8 +14,8 @@ export default function Authenticate ({ isFetching, error, onAuth }) {
   const googleAuthentication = false
 
   return (
-    <div className={centeredContainer}>
-      <h1 className={largeHeader}>Authenticate</h1>
+    <div>
+      <h1>Authenticate</h1>
       {facebookAuthentication &&
         <FacebookAuthButton
           isFetching={isFetching}
@@ -25,7 +24,7 @@ export default function Authenticate ({ isFetching, error, onAuth }) {
         <GoogleAuthButton
           isFetching={isFetching}
           onAuth={onAuth} />}
-      {error && <p className={errorMsg}>{error}</p>}
+      {error && <p>{error}</p>}
     </div>
   )
 }

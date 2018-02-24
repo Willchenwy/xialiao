@@ -10,6 +10,7 @@ import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/es/integration/react'
 import reducers from 'redux/modules'
 import restricted from 'helpers/restricted'
+import 'semantic-ui-css/semantic.min.css'
 
 const history = createHistory()
 const middleware = routerMiddleware(history)

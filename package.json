@@ -26,7 +26,8 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^3.7.2",
     "redux-persist": "^5.9.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "semantic-ui-css": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -44,9 +45,11 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
+    "file-loader": "^1.1.9",
     "html-webpack-plugin": "^2.29.0",
     "prop-types": "^15.5.10",
     "style-loader": "^0.18.2",
+    "url-loader": "^0.6.2",
     "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1"
   }
