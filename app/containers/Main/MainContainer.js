@@ -8,7 +8,6 @@ import * as usersLikesActionCreators from 'redux/modules/usersLikes'
 import { formatUserInfo } from 'helpers/utils'
 import { firebaseAuth } from 'config/constants'
 import { Navigation } from 'components'
-import { container, innerContainer } from './styles.css'
 import { store } from '../../index'
 import { push } from 'react-router-redux'
 
@@ -33,9 +32,9 @@ class MainContainer extends Component {
   render () {
     return this.props.isFetching === true
       ? null
-      : <div className={container}>
+      : <div>
         <Navigation isAuthed={this.props.isAuthed}/>
-        <div className={innerContainer}>
+        <div>
           {this.props.children}
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  mainContainer, container, content, repliesContainer,
-  replyTextAreaContainer, replyTextArea } from './styles.css'
-import { subHeader, darkBtn, errorMsg } from 'shared/styles.css'
+// import {
+//   mainContainer, container, content, repliesContainer,
+//   replyTextAreaContainer, replyTextArea } from './styles.css'
+// import { subHeader, darkBtn, errorMsg } from 'shared/styles.css'
 import { DuckContainer, RepliesContainer } from 'containers'
 import { formatReply } from 'helpers/utils'
 
@@ -18,14 +18,13 @@ function Reply ({ submit }) {
   }
 
   return (
-    <div className={replyTextAreaContainer}>
+    <div>
       <textarea
         ref={(ref) => Reply.ref = ref}
-        className={replyTextArea}
         maxLength={140}
         placeholder='Your response'
         type='text' />
-      <button onClick={handleSubmit} className={darkBtn}>
+      <button onClick={handleSubmit}>
         Submit
       </button>
     </div>
@@ -42,22 +41,22 @@ DuckDetails.propTypes = {
 
 export default function DuckDetails ({ duckId, isFetching, authedUser, error, addAndHandleReply }) {
   return (
-    <div className={mainContainer}>
+    <div>
       {isFetching === true
-        ? <p className={subHeader}>Loading</p>
-        : <div className={container}>
-          <div className={content}>
+        ? <p>Loading</p>
+        : <div>
+          <div>
             <DuckContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
             <Reply submit={(replyText) => addAndHandleReply(
               duckId,
               formatReply(authedUser, replyText)) } />
           </div>
-          <div className={repliesContainer}>
+          <div>
             <RepliesContainer duckId={duckId} />
           </div>
         </div>}
       {error &&
-          <p className={errorMsg}>{error}</p>}
+          <p>{error}</p>}
     </div>
   )
 }

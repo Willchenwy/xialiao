@@ -1,4 +1,0 @@
-.text {
-  composes: center from 'shared/styles.css';
-  composes: subHeader from 'shared/styles.css';
-}

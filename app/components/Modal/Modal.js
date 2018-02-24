@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { default as ReactModal } from 'react-modal'
-import {
-  newDuckTop, pointer, newDuckInputContainer,
-  newDuckInput, submitDuckBtn, darkBtn } from './styles.css'
+// import {
+//   newDuckTop, pointer, newDuckInputContainer,
+//   newDuckInput, submitDuckBtn, darkBtn } from './styles.css'
 import { formatDuck } from 'helpers/utils'
 
 const modalStyles = {
@@ -34,28 +34,26 @@ export default function Modal (props) {
   }
 
   return (
-    <span className={darkBtn} onClick={props.openModal}>
+    <span onClick={props.openModal}>
       Duck
       <ReactModal
         style={modalStyles}
         isOpen={props.isOpen}
         onRequestClose={props.closeModal}
         contentLabel='Modal'>
-        <div className={newDuckTop}>
+        <div>
           <span>Compose new Duck</span>
-          <span onClick={props.closeModal} className={pointer}>X</span>
+          <span onClick={props.closeModal}>X</span>
         </div>
-        <div className={newDuckInputContainer}>
+        <div>
           <textarea
             onChange={(e) => props.updateDuckText(e.target.value)}
             value={props.duckText}
             maxLength={140}
             type='text'
-            className={newDuckInput}
             placeholder="What's on your mind?" />
         </div>
         <button
-          className={submitDuckBtn}
           disabled={props.isSubmitDisabled}
           onClick={submitDuck}>
           Duck

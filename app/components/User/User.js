@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { userContainer, header } from './styles.css'
-import { errorMsg } from 'shared/styles.css'
+// import { userContainer, header } from './styles.css'
+// import { errorMsg } from 'shared/styles.css'
 import { DuckContainer } from 'containers'
 
 User.propTypes = {
@@ -15,24 +15,24 @@ User.propTypes = {
 export default function User (props) {
   return (
     props.noUser === true
-      ? <p className={header}>This user does not exist</p>
+      ? <p>This user does not exist</p>
       : <div>
         {props.isFetching === true
-          ? <p className={header}>Loading</p>
+          ? <p>Loading</p>
           : <div>
-            <div className={userContainer}>
+            <div>
               <div>{props.name}</div>
             </div>
             {props.duckIds.map((id) => {
               return <DuckContainer duckId={id} key={id} />
             })}
             {props.duckIds.length === 0 &&
-                  <p className={header}>
+                  <p>
                     It looks like {props.name.split(' ')[0]} hasn't made any ducks yet.
                   </p>}
           </div>}
         {props.error &&
-            <p className={errorMsg}>{props.error}</p>}
+            <p>{props.error}</p>}
       </div>
   )
 }
