@@ -14,6 +14,7 @@ export function fetchingUsersDucks (uid) {
 }
 
 export function fetchingUsersDucksFailure (error) {
+  console.log({'fetchingUsersDucksFailure': error})
   return {
     type: FETCHING_USERS_DUCKS_FAILURE,
     error: 'Error fetching users ducks ids',

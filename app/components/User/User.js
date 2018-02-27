@@ -23,9 +23,11 @@ export default function User (props) {
             <div>
               <div>{props.name}</div>
             </div>
-            {props.duckIds.map((id) => {
-              return <DuckContainer duckId={id} key={id} />
-            })}
+            {props.duckIds.map((id) => (
+              <DuckContainer
+                duckId={id}
+                key={id} />
+            ))}
             {props.duckIds.length === 0 &&
                   <p>
                     It looks like {props.name.split(' ')[0]} hasn't made any ducks yet.
