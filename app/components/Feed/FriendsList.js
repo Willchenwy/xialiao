@@ -5,7 +5,7 @@ const ListExampleAnimated = () => (
   <List selection={true} verticalAlign='middle' floated='right'>
     <List.Item>
       <List.Header style={{paddingBottom: '15px'}}>FRIENDS</List.Header>
-      <Divider fitted />
+      <Divider fitted={true} />
     </List.Item>
     <List.Item>
       <Image avatar={true} src={require('../../assets/images/avatar/small/helen.jpg')} />
