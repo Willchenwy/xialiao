@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { formatTimestamp } from 'helpers/utils'
-import Reply from 'react-icons/lib/fa/mail-reply'
-import Star from 'react-icons/lib/fa/star'
+import { Segment, Feed, Icon } from 'semantic-ui-react'
 
 Duck.propTypes = {
   duck: PropTypes.shape({
@@ -27,27 +26,35 @@ export default function Duck (props) {
   const starFn = props.isLiked === true ? props.handleDeleteLike : props.addAndHandleLike
   const cursorValue = props.hideReplyBtn === true ? 'default' : 'pointer'
   return (
-    <div
-      style={{cursor: cursorValue}}
-      onClick={props.onClick}>
-      <img src={props.duck.avatar}/>
-      <div>
-        <div>
-          <div onClick={props.goToProfile}>{props.duck.name}</div>
-          <div>{formatTimestamp(props.duck.timestamp)}</div>
-        </div>
-        <div>{props.duck.text}</div>
-        <div>
-          {!props.hideReplyBtn &&
-            <Reply/>}
-          <div>
-            <Star
-              onClick={(e) => starFn(props.duck.duckId, e)} />
-            {!props.hideLikeCount &&
-              <div>{props.numberOfLikes}</div>}
-          </div>
-        </div>
+    <Segment raised={true}>
+      <div
+        style={{cursor: cursorValue}}
+        onClick={props.onClick}>
+        <Feed>
+          <Feed.Event>
+            <Feed.Label image={props.duck.avatar} />
+            <Feed.Content>
+              <Feed.Summary>
+                <a onClick={props.goToProfile}>{props.duck.name}</a>
+                <Feed.Date>{formatTimestamp(props.duck.timestamp)}</Feed.Date>
+              </Feed.Summary>
+              <Feed.Extra text={true}>
+                {props.duck.text}
+              </Feed.Extra>
+              <Feed.Meta style={{float: 'right'}}>
+                {!props.hideReplyBtn && <Icon name='reply' />}
+                <Feed.Like>
+                  <Icon
+                    name='favorite'
+                    color={props.isLiked === true ? 'yellow' : 'grey'}
+                    onClick={(e) => starFn(props.duck.duckId, e)} />
+                  {!props.hideLikeCount && <span>{props.numberOfLikes}</span>}
+                </Feed.Like>
+              </Feed.Meta>
+            </Feed.Content>
+          </Feed.Event>
+        </Feed>
       </div>
-    </div>
+    </Segment>
   )
 }

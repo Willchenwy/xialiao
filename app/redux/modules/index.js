@@ -6,6 +6,7 @@ import feedReducer from './feed'
 import listenersReducer from './listeners'
 import usersLikesReducer from './usersLikes'
 import likeCountReducer from './likeCount'
+import { reducer as formReducer } from 'redux-form'
 import repliesReducer from './replies'
 import { routerReducer } from 'react-router-redux'
 import { persistCombineReducers } from 'redux-persist'
@@ -28,6 +29,7 @@ const rootReducer = persistCombineReducers(persistConfig, {
   usersLikes: usersLikesReducer,
   likeCount: likeCountReducer,
   replies: repliesReducer,
+  form: formReducer,
 })
 
 export default rootReducer

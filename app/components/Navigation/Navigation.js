@@ -1,39 +1,53 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { ModalContainer } from 'containers'
+import { Menu, Dropdown, Icon, Image } from 'semantic-ui-react'
 
-Navigation.propTypes = NavLinks.propTypes = ActionLinks.propTypes = {
+Navigation.propTypes = {
   isAuthed: PropTypes.bool.isRequired,
+  user: PropTypes.any,
 }
 
-function NavLinks ({ isAuthed }) {
-  return isAuthed === true
-    ? <ul>
-      <li><Link to='/'>Home</Link></li>
-    </ul>
-    : null
-}
+const Navi = ({user}) => (
+  <Menu borderless={true}>
+    <Menu.Item as={Link} to='/'>
+      <Image size='mini' src={require('../../assets/images/crt425.png')} style={{ marginRight: '1.5em', marginLeft: '1.5em' }}/>
+      <span style={{color: 'black', fontSize: 'large'}}>Xialiao</span>
+    </Menu.Item>
+    <Menu.Item as={Link} to='/' icon={true} position='right'>
+      <Icon size='large' name='mail' />
+    </Menu.Item>
+    <Menu.Item as={Link} to='/' icon={true}>
+      <Icon size='large' name='alarm' />
+    </Menu.Item>
+    <Dropdown pointing='top' text={user.name} className='link item' style={{ marginRight: '1.5em' }}>
+      <Dropdown.Menu>
+        <Dropdown.Item as={Link} to='/'>My Account</Dropdown.Item>
+        <Dropdown.Item as={Link} to='/'>Setting</Dropdown.Item>
+        <Dropdown.Item as={Link} to='/logout'>Logout</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  </Menu>
+)
 
-function ActionLinks ({ isAuthed }) {
-  return isAuthed === true
-    ? <ul>
-      <li><ModalContainer /></li>
-      <li><Link to='/logout'>Logout</Link></li>
-    </ul>
-    : <ul>
-      <li><Link to='/'>Home</Link></li>
-      <li><Link to='/login'>Login</Link></li>
-    </ul>
-}
+const Login = () => (
+  <Menu borderless={true}>
+    <Menu.Item as={Link} to='/' position='left'>
+      Home
+    </Menu.Item>
+    <Menu.Item as={Link} to='/login' position='right'>
+      Login
+    </Menu.Item>
+    <Menu.Item as={Link} to='/'>
+      Sing up
+    </Menu.Item>
+  </Menu>
+)
 
-export default function Navigation ({ isAuthed }) {
+export default function Navigation ({ isAuthed, user }) {
   return (
-    <div>
-      <nav>
-        <NavLinks isAuthed={isAuthed}/>
-        <ActionLinks isAuthed={isAuthed}/>
-      </nav>
-    </div>
+    isAuthed === true
+      ? <Navi user={user.info}/>
+      : <Login />
   )
 }

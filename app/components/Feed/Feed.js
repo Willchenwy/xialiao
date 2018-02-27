@@ -1,14 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { newDuckContainer, header } from './styles.css'
-// import { errorMsg } from 'shared/styles.css'
 import { DuckContainer } from 'containers'
+import { Grid, Loader, Message } from 'semantic-ui-react'
+import ListExampleAnimated from './FriendsList'
 
 function NewDucksAvailable ({ handleClick }) {
   return (
-    <div onClick={handleClick}>
+    <Message onClick={handleClick} color='blue'>
       New Ducks Available
-    </div>
+    </Message>
   )
 }
 
@@ -26,17 +26,22 @@ Feed.propTypes = {
 
 export default function Feed (props) {
   return props.isFetching === true
-    ? <h1>Fetching</h1>
-    : <div>
-      {props.newDucksAvailable &&
-          <NewDucksAvailable handleClick={props.resetNewDucksAvailable} />}
-      {props.duckIds.length === 0 &&
-          <p>This is unfortunate. <br /> It appears there are no ducks yet.</p>}
-      {props.duckIds.map((id) => (
-        <DuckContainer
-          duckId={id}
-          key={id} />
-      ))}
-      {props.error && <p>{props.error}</p>}
-    </div>
+    ? <Loader active={true} inline='centered' />
+    : <Grid.Row>
+      <Grid.Column width={12}>
+        {props.newDucksAvailable &&
+                    <NewDucksAvailable handleClick={props.resetNewDucksAvailable} />}
+        {props.duckIds.length === 0 &&
+                    <p>This is unfortunate. <br /> It appears there are no ducks yet.</p>}
+        {props.duckIds.map((id) => (
+          <DuckContainer
+            duckId={id}
+            key={id} />
+        ))}
+        {props.error && <p>{props.error}</p>}
+      </Grid.Column>
+      <Grid.Column width={4}>
+        <ListExampleAnimated />
+      </Grid.Column>
+    </Grid.Row>
 }

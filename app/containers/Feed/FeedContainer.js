@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Feed } from 'components'
+import { Grid } from 'semantic-ui-react'
+import ComposeContainer from '../Compose/ComposeContainer'
 import * as feedActionCreators from 'redux/modules/feed'
 
 class FeedContainer extends Component {
@@ -12,12 +14,15 @@ class FeedContainer extends Component {
 
   render () {
     return (
-      <Feed
-        duckIds={this.props.duckIds}
-        newDucksAvailable={this.props.newDucksAvailable}
-        error={this.props.error}
-        isFetching={this.props.isFetching}
-        resetNewDucksAvailable={this.props.resetNewDucksAvailable}/>
+      <Grid>
+        <ComposeContainer />
+        <Feed
+          duckIds={this.props.duckIds}
+          newDucksAvailable={this.props.newDucksAvailable}
+          error={this.props.error}
+          isFetching={this.props.isFetching}
+          resetNewDucksAvailable={this.props.resetNewDucksAvailable}/>
+      </Grid>
     )
   }
 }
