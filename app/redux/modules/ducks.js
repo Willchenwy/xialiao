@@ -53,13 +53,15 @@ export function addMultipleDucks (ducks) {
 export function duckFanout (duck) {
   return function (dispatch, getState) {
     const uid = getState().users.authId
-    saveDuck(duck)
-      .then((duckWithId) => {
-        dispatch(addDuck(duckWithId))
-        dispatch(closeModal())
-        dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
-      })
-      .catch((error) => console.warn('Error in duckFanout: ', error))
+    return (
+      saveDuck(duck)
+        .then((duckWithId) => {
+          dispatch(addDuck(duckWithId))
+          dispatch(closeModal())
+          dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
+        })
+        .catch((error) => console.warn('Error in duckFanout: ', error))
+    )
   }
 }
 

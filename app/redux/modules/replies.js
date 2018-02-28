@@ -58,10 +58,12 @@ export function addAndHandleReply (duckId, reply) {
     const { replyWithId, replyPromise } = postReply(duckId, reply)
 
     dispatch(addReply(duckId, replyWithId))
-    replyPromise.catch((error) => {
-      dispatch(removeReply(duckId, replyWithId.replyId))
-      dispatch(addReplyFailure(error))
-    })
+    return (
+      replyPromise.catch((error) => {
+        dispatch(removeReply(duckId, replyWithId.replyId))
+        dispatch(addReplyFailure(error))
+      })
+    )
   }
 }
 

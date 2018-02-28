@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { duckFanout } from '../../redux/modules/ducks'
-import { formatDuck } from '../../helpers/utils'
-import { Form, Button, Grid, TextArea, Header } from 'semantic-ui-react'
+import { Form, Button, Grid, TextArea, Divider, Segment } from 'semantic-ui-react'
 
 const inputBox = (field) => {
   return (
@@ -13,36 +10,32 @@ const inputBox = (field) => {
       {...field.input}
       rows={field.input.value === '' ? 1 : 3}
       style={{resize: 'none'}}
-      placeholder='Compose new Duck'/>
+      placeholder={field.placeholder}/>
   )
 }
 
 class ComposeContainer extends Component {
-  handleFormSubmit = ({text}) => {
-    const {duckFanout, user, reset} = this.props
-    duckFanout(formatDuck(text, user))
-    reset()
-  }
   render () {
-    const {handleSubmit, pristine} = this.props
+    const {handleSubmit, pristine, handleFormSubmit, placeholder, style} = this.props
     return (
-      <Grid.Row style={{paddingTop: '40px'}}>
+      <Grid.Row style={style}>
         <Grid.Column width={12}>
-          <Header as='h2'>What's happing?</Header>
-          <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
+          {this.props.children}
+          <Form onSubmit={handleSubmit(handleFormSubmit)}>
             <Form.Field>
               <Field
                 name='text'
-                component={inputBox}/>
+                component={inputBox}
+                placeholder={placeholder}/>
             </Form.Field>
-            <div>
-              {pristine
-                ? null
-                : <Button
-                  primary={true}
-                  type='submit'
-                  floated='right'>Send</Button>}
-            </div>
+            {pristine
+              ? null
+              : <Segment clearing={true} basic={true} style={{padding: '5px'}}><Button
+                primary={true}
+                type='submit'
+                floated='right'>Send</Button>
+              </Segment>}
+            {pristine ? null : <Divider clearing={true}/>}
           </Form>
         </Grid.Column>
       </Grid.Row>
@@ -50,31 +43,17 @@ class ComposeContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ users }) => {
-  return {
-    user: users[users.authedId] ? users[users.authedId].info : {},
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    duckFanout,
-  }, dispatch)
-}
-
 const ReduxForm = reduxForm({
   form: 'compose',
 })(ComposeContainer)
 
 ComposeContainer.propTypes = {
-  user: PropTypes.any.isRequired,
-  duckFanout: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
   reset: PropTypes.func.isRequired,
+  handleFormSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  style: PropTypes.object.isRequired,
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ReduxForm)
+export default connect()(ReduxForm)

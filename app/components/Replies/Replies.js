@@ -1,17 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { formatTimestamp } from 'helpers/utils'
+import { Comment, Grid, Segment, Loader, Image, Dimmer } from 'semantic-ui-react'
 
 function Reply ({ comment }) {
   return (
-    <div>
-      <img src={comment.avatar} alt={comment.name} />
-      <div>
-        <div>{comment.name}</div>
-        <div>{formatTimestamp(comment.timestamp)}</div>
-        <div>{comment.reply}</div>
-      </div>
-    </div>
+    <Comment>
+      <Comment.Avatar src={comment.avatar} />
+      <Comment.Content>
+        <Comment.Author as={Link} to={`${comment.uid}`}>{comment.name}</Comment.Author>
+        <Comment.Metadata>
+          <div>{formatTimestamp(comment.timestamp)}</div>
+        </Comment.Metadata>
+        <Comment.Text>{comment.reply}</Comment.Text>
+      </Comment.Content>
+    </Comment>
   )
 }
 
@@ -25,17 +29,23 @@ export default function Replies ({ isFetching, error, replies }) {
   const replyIds = Object.keys(replies)
 
   return (
-    <div>
+    <Grid.Row style={{marginTop: '20px'}}>
       {error &&
         <p>{error}</p>}
       {isFetching === true
-        ? <p>Fetching Replies</p>
-        : <div>
-          <h1>Replies</h1>
-          {replyIds.map((replyId) => (<Reply key={replyId} comment={replies[replyId]} />))}
-        </div>}
+        ? <Segment>
+          <Dimmer active={true} inverted={true}>
+            <Loader size='small'>Loading</Loader>
+          </Dimmer>
+          <Image src={require('../../assets/images/wireframe/short-paragraph.png')} />
+        </Segment>
+        : <Grid.Column width={16}>
+          <Comment.Group>
+            {replyIds.map((replyId) => (<Reply key={replyId} comment={replies[replyId]} />))}
+          </Comment.Group>
+        </Grid.Column>}
       {replyIds.length === 0 &&
           <h3>Be the first to comment.</h3>}
-    </div>
+    </Grid.Row>
   )
 }

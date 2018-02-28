@@ -29,15 +29,17 @@ export default function Duck (props) {
     <Segment raised={true}>
       <div
         style={{cursor: cursorValue}}
-        onClick={props.onClick}>
+        onClick={props.hideReplyBtn ? null : props.onClick}>
         <Feed>
           <Feed.Event>
-            <Feed.Label image={props.duck.avatar} />
+            {props.hideReplyBtn ? null : <Feed.Label image={props.duck.avatar} />}
             <Feed.Content>
-              <Feed.Summary>
-                <a onClick={props.goToProfile}>{props.duck.name}</a>
-                <Feed.Date>{formatTimestamp(props.duck.timestamp)}</Feed.Date>
-              </Feed.Summary>
+              {props.hideReplyBtn
+                ? null
+                : <Feed.Summary>
+                  <a onClick={props.goToProfile}>{props.duck.name}</a>
+                  <Feed.Date>{formatTimestamp(props.duck.timestamp)}</Feed.Date>
+                </Feed.Summary>}
               <Feed.Extra text={true}>
                 {props.duck.text}
               </Feed.Extra>

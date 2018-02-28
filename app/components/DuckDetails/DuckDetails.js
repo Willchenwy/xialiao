@@ -1,62 +1,58 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import {
-//   mainContainer, container, content, repliesContainer,
-//   replyTextAreaContainer, replyTextArea } from './styles.css'
-// import { subHeader, darkBtn, errorMsg } from 'shared/styles.css'
-import { DuckContainer, RepliesContainer } from 'containers'
-import { formatReply } from 'helpers/utils'
-
-function Reply ({ submit }) {
-  function handleSubmit (e) {
-    if (Reply.ref.value.length === 0) {
-      return
-    }
-
-    submit(Reply.ref.value, e)
-    Reply.ref.value = ''
-  }
-
-  return (
-    <div>
-      <textarea
-        ref={(ref) => Reply.ref = ref}
-        maxLength={140}
-        placeholder='Your response'
-        type='text' />
-      <button onClick={handleSubmit}>
-        Submit
-      </button>
-    </div>
-  )
-}
+import { DuckContainer, RepliesContainer, ComposeContainer } from 'containers'
+import { Feed, Segment, Grid, Loader, Header, Dimmer, Image } from 'semantic-ui-react'
 
 DuckDetails.propTypes = {
-  authedUser: PropTypes.object.isRequired,
-  duckId: PropTypes.string.isRequired,
+  duck: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    duckId: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
+    uid: PropTypes.string.isRequired,
+  }),
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
-  addAndHandleReply: PropTypes.func.isRequired,
+  handleFormSubmit: PropTypes.func.isRequired,
 }
 
-export default function DuckDetails ({ duckId, isFetching, authedUser, error, addAndHandleReply }) {
+export default function DuckDetails (props) {
+  const { isFetching, handleFormSubmit } = props
   return (
-    <div>
-      {isFetching === true
-        ? <p>Loading</p>
-        : <div>
-          <div>
-            <DuckContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
-            <Reply submit={(replyText) => addAndHandleReply(
-              duckId,
-              formatReply(authedUser, replyText)) } />
-          </div>
-          <div>
-            <RepliesContainer duckId={duckId} />
-          </div>
-        </div>}
-      {error &&
-          <p>{error}</p>}
-    </div>
+    isFetching === true
+      ? <Segment>
+        <Dimmer active={true} inverted={true}>
+          <Loader size='large'>Loading</Loader>
+        </Dimmer>
+        <Image src={require('../../assets/images/wireframe/paragraph.png')} />
+      </Segment>
+      : <Grid.Row style={{marginTop: '40px'}}>
+        <Grid.Column width={16}>
+          <Feed>
+            <Feed.Event>
+              <Feed.Label as={Link} to={`/${props.duck.uid}`} image={props.duck.avatar} />
+              <Feed.Content>
+                <Feed.Summary>
+                  <Feed.User as={Link} to={`/${props.duck.uid}`}>{props.duck.name} </Feed.User>
+                </Feed.Summary>
+                <Feed.Meta>
+                  <Feed.Date>posted 3 days ago</Feed.Date>
+                </Feed.Meta>
+              </Feed.Content>
+            </Feed.Event>
+          </Feed>
+          <DuckContainer duckId={props.duck.duckId} hideLikeCount={false} hideReplyBtn={true} />
+          <Header as='h3' dividing={true}>Comments</Header>
+          <ComposeContainer
+            handleFormSubmit={handleFormSubmit}
+            placeholder='Add a public comment...'
+            style={{marginTop: '20px'}}/>
+          <RepliesContainer duckId={props.duck.duckId} />
+        </Grid.Column>
+      </Grid.Row>
+      // {error &&
+      //     <p>{error}</p>}
   )
 }

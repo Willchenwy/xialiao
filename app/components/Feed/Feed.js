@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { DuckContainer } from 'containers'
-import { Grid, Loader, Message } from 'semantic-ui-react'
+import { Grid, Loader, Message, Segment, Dimmer, Image } from 'semantic-ui-react'
 import ListExampleAnimated from './FriendsList'
 
 function NewDucksAvailable ({ handleClick }) {
@@ -26,7 +26,12 @@ Feed.propTypes = {
 
 export default function Feed (props) {
   return props.isFetching === true
-    ? <Loader active={true} inline='centered' />
+    ? <Segment>
+      <Dimmer active={true} inverted={true}>
+        <Loader size='large'>Loading</Loader>
+      </Dimmer>
+      <Image src={require('../../assets/images/wireframe/paragraph.png')} />
+    </Segment>
     : <Grid.Row>
       <Grid.Column width={12}>
         {props.newDucksAvailable &&
