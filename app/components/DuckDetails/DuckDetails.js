@@ -19,17 +19,17 @@ DuckDetails.propTypes = {
 }
 
 export default function DuckDetails (props) {
-  const { isFetching, handleFormSubmit } = props
+  const { isFetching, handleFormSubmit, error } = props
   return (
-    isFetching === true
-      ? <Segment>
-        <Dimmer active={true} inverted={true}>
-          <Loader size='large'>Loading</Loader>
-        </Dimmer>
-        <Image src={require('../../assets/images/wireframe/paragraph.png')} />
-      </Segment>
-      : <Grid.Row style={{marginTop: '40px'}}>
-        <Grid.Column width={16}>
+    <Grid.Row style={{marginTop: '40px'}}>
+      {isFetching === true
+        ? <Segment>
+          <Dimmer active={true} inverted={true}>
+            <Loader size='large'>Loading</Loader>
+          </Dimmer>
+          <Image src={require('../../assets/images/wireframe/paragraph.png')} />
+        </Segment>
+        : <Grid.Column width={16}>
           <Feed>
             <Feed.Event>
               <Feed.Label as={Link} to={`/${props.duck.uid}`} image={props.duck.avatar} />
@@ -50,9 +50,9 @@ export default function DuckDetails (props) {
             placeholder='Add a public comment...'
             style={{marginTop: '20px'}}/>
           <RepliesContainer duckId={props.duck.duckId} />
-        </Grid.Column>
-      </Grid.Row>
-      // {error &&
-      //     <p>{error}</p>}
+        </Grid.Column>}
+      {error &&
+          <p>{error}</p>}
+    </Grid.Row>
   )
 }

@@ -17,7 +17,6 @@ class DuckContainer extends Component {
 
   goToProfile (e) {
     e.stopPropagation()
-    console.log('goToProfile')
     store.dispatch(push(`/${this.props.duck.uid}`))
   }
 

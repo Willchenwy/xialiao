@@ -1,40 +1,69 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { userContainer, header } from './styles.css'
-// import { errorMsg } from 'shared/styles.css'
-import { DuckContainer } from 'containers'
+import { Link, Switch, Route, Redirect } from 'react-router-dom'
+import { Dimmer, Loader, Image as ImageComponent, Segment, Grid, Header, Item, Menu } from 'semantic-ui-react'
+import UserDuck from './UserDuck'
+import UserFollow from './UserFollow'
+import UserFriends from './UserFriends'
+
+const paragraph = <ImageComponent src={require('../../assets/images/wireframe/short-paragraph.png')} />
+
+const User = ({ noUser, user, isFetching, error, duckIds, match, location }) => (
+  <Grid.Row style={{marginTop: '40px'}}>
+    {noUser === true
+      ? <Header as='h3'>This user does not exist</Header>
+      : isFetching === true
+        ? <Segment>
+          <Dimmer active={true} inverted={true}>
+            <Loader size='large'>Loading</Loader>
+          </Dimmer>
+          <ImageComponent src={require('../../assets/images/wireframe/paragraph.png')} />
+        </Segment>
+        : <Grid.Column width={16}>
+          <Item.Group>
+            <Item>
+              <Item.Image src={user.avatar} />
+              <Item.Content>
+                <Item.Header as='a'>{user.name}</Item.Header>
+                <Item.Meta>
+                  <span>United State</span>
+                </Item.Meta>
+                <Item.Description>{paragraph}</Item.Description>
+              </Item.Content>
+            </Item>
+          </Item.Group>
+          <Menu pointing={true} secondary={true}>
+            <Menu.Item name='Ducks' active={`${match.url}/duckList` === `${location.pathname}`}
+              as={Link}
+              to={`${match.url}/duckList`}/>
+            <Menu.Item name='follow' active={`${match.url}/follow` === `${location.pathname}`}
+              as={Link}
+              to={`${match.url}/follow`}/>
+            <Menu.Item name='friends' active={`${match.url}/friends` === `${location.pathname}`}
+              as={Link}
+              to={`${match.url}/friends`}/>
+          </Menu>
+          <Switch>
+            <Route
+              path={`${match.path}/duckList`}
+              render={(props) => <UserDuck {...props} duckIds={duckIds} />} />
+            <Route path={`${match.path}/follow`} component = {UserFollow} />
+            <Route path={`${match.path}/friends`} component = {UserFriends} />
+            <Redirect to={`${match.url}/duckList`}/>
+          </Switch>
+        </Grid.Column>}
+    {error && <Header as='h3'>{error}</Header>}
+  </Grid.Row >
+)
 
 User.propTypes = {
   noUser: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
   duckIds: PropTypes.array.isRequired,
+  match: PropTypes.any,
+  location: PropTypes.any,
 }
 
-export default function User (props) {
-  return (
-    props.noUser === true
-      ? <p>This user does not exist</p>
-      : <div>
-        {props.isFetching === true
-          ? <p>Loading</p>
-          : <div>
-            <div>
-              <div>{props.name}</div>
-            </div>
-            {props.duckIds.map((id) => (
-              <DuckContainer
-                duckId={id}
-                key={id} />
-            ))}
-            {props.duckIds.length === 0 &&
-                  <p>
-                    It looks like {props.name.split(' ')[0]} hasn't made any ducks yet.
-                  </p>}
-          </div>}
-        {props.error &&
-            <p>{props.error}</p>}
-      </div>
-  )
-}
+export default User
