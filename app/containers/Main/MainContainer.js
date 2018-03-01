@@ -7,7 +7,7 @@ import * as userActionCreators from 'redux/modules/users'
 import * as usersLikesActionCreators from 'redux/modules/usersLikes'
 import { formatUserInfo } from 'helpers/utils'
 import { firebaseAuth } from 'config/constants'
-import { Navigation } from 'components'
+import NavigationContainer from '../Navigation/NavigationContainer'
 import { store } from '../../index'
 import { push } from 'react-router-redux'
 import { Container } from 'semantic-ui-react'
@@ -34,7 +34,7 @@ class MainContainer extends Component {
     return this.props.isFetching === true
       ? null
       : <div>
-        <Navigation isAuthed={this.props.isAuthed} user={this.props.user}/>
+        <NavigationContainer />
         <Container text={true}>
           {this.props.children}
         </Container>
@@ -45,7 +45,6 @@ class MainContainer extends Component {
 MainContainer.propTypes = {
   children: PropTypes.any,
   user: PropTypes.any,
-  isAuthed: PropTypes.bool.isRequired,
   authUser: PropTypes.func.isRequired,
   fetchingUserSuccess: PropTypes.func.isRequired,
   setUsersLikes: PropTypes.func.isRequired,
@@ -59,6 +58,6 @@ MainContainer.contextTypes = {
 }
 
 export default withRouter(connect(
-  ({users}) => ({ isAuthed: users.isAuthed, isFetching: users.isFetching, user: users[users.authedId] }),
+  ({users}) => ({ isFetching: users.isFetching, user: users[users.authedId] }),
   (dispatch) => bindActionCreators({...userActionCreators, ...usersLikesActionCreators}, dispatch)
 )(MainContainer))
