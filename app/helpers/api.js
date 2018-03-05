@@ -30,6 +30,38 @@ export function saveDuck (duck) {
   ]).then(() => ({...duck, duckId}))
 }
 
+function saveToReceiversInbox (message, receiverId) {
+  const messageId = ref.child(`mailbox/${receiverId}/inbox`).push().key
+  const messagePromise = ref.child(`mailbox/${receiverId}/inbox/${messageId}`).set({...message, messageId})
+
+  return {
+    messageId,
+    messagePromise,
+  }
+}
+
+function saveToSendersSent (messageId, message, senderId) {
+  return ref.child(`mailbox/${senderId}/sent/${messageId}`)
+    .set({...message, messageId})
+}
+
+function saveToReceiversUnread (messageId, senderId, receiverId) {
+  return ref.child(`mailbox/${receiverId}/unread/${messageId}`)
+    .set(senderId)
+}
+
+export function saveMessage (message) {
+  console.log({'api received': message})
+  const {senderId, receiverId} = message
+  const {messageId, messagePromise} = saveToReceiversInbox(message, receiverId)
+
+  return Promise.all([
+    messagePromise,
+    saveToSendersSent(messageId, message, senderId),
+    saveToReceiversUnread(messageId, senderId, receiverId),
+  ]).then(() => ({...message, messageId}))
+}
+
 export function listenToFeed (cb, errorCb) {
   let timesCalled = 0
   ref.child('ducks').on('value', (snapshot) => {

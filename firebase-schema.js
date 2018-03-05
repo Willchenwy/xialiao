@@ -1,3 +1,5 @@
+import { inbox } from "./app/redux/modules/inbox";
+
 // Reference for the firebase schema
 // Not valid JS and not used in the project
 
@@ -52,3 +54,21 @@
 /usersLikes
   uid
     duckId: true
+
+/mailbox
+  uid
+    unread
+    inbox
+      messageIds
+        text
+        subject
+        sender
+        receiver
+        created
+    sent
+      messageIds
+        text
+        title
+        sender
+        receiver
+        created

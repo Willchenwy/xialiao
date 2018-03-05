@@ -75,4 +75,23 @@
   listeners: {
     [listenerId]: true
   }
+  inbox: {
+    isFetching,
+    error,
+    unread: [messageId, messageId, messageId]
+    [messageId]: {
+      text
+      created
+      senderId
+    }
+  },
+  sent: {
+    isFetching,
+    error,
+    [messageId]: {
+      text
+      created
+      receiverId
+    }
+  }
 }

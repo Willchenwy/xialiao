@@ -9,12 +9,22 @@ export function formatUserInfo (name, avatar, uid) {
   }
 }
 
-export function formatDuck (text, { avatar, name, uid}) {
+export function formatDuck (text, {avatar, name, uid}) {
   return {
     text,
     name,
     avatar,
     uid,
+    timestamp: Date.now(),
+  }
+}
+
+export function formatMessage (text, subject, senderId, receiverId) {
+  return {
+    text,
+    subject,
+    senderId,
+    receiverId,
     timestamp: Date.now(),
   }
 }
@@ -40,7 +50,7 @@ export function staleReplies (timestamp) {
   return getMilliseconds(timestamp) > repliesExpirationLength
 }
 
-export function formatReply ({ name, uid, avatar}, reply) {
+export function formatReply ({name, uid, avatar}, reply) {
   return {
     name,
     reply,
