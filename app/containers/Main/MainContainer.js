@@ -6,25 +6,22 @@ import { bindActionCreators } from 'redux'
 import * as userActionCreators from 'redux/modules/users'
 import * as usersLikesActionCreators from 'redux/modules/usersLikes'
 import { formatUserInfo } from 'helpers/utils'
-import { firebaseAuth } from 'config/constants'
+import { wilddogAuth } from 'config/constants'
 import NavigationContainer from '../Navigation/NavigationContainer'
-import { store } from '../../index'
-import { push } from 'react-router-redux'
 import { Container } from 'semantic-ui-react'
 
 class MainContainer extends Component {
   componentDidMount () {
-    firebaseAuth().onAuthStateChanged((user) => {
+    wilddogAuth.onAuthStateChanged((user) => {
       if (user) {
-        const userData = user.providerData[0]
-        const userInfo = formatUserInfo(userData.displayName, userData.photoURL, user.uid)
-        this.props.authUser(user.uid)
-        this.props.fetchingUserSuccess(user.uid, userInfo, Date.now())
+        console.log({'onAuthStateChanged': user})
+        const { displayName, photoURL, uid } = user
+        const userInfo = formatUserInfo(displayName, photoURL, uid)
+        this.props.authUser(uid)
+        this.props.fetchingUserSuccess(uid, userInfo, Date.now())
         this.props.setUsersLikes()
-        if (this.props.location.pathname === '/feed') {
-          store.dispatch(push('feed'))
-        }
       } else {
+        console.log('no user')
         this.props.removeFetchingUser()
       }
     })

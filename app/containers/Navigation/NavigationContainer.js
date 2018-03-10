@@ -18,7 +18,8 @@ class NavigationContainer extends Component {
         isAuthed={this.props.isAuthed}
         user={this.props.user}
         mailOptions={mailOptions}
-        alarmOptions={alarmOptions}/>
+        alarmOptions={alarmOptions}
+        location={this.props.location}/>
     )
   }
 }
@@ -26,12 +27,14 @@ class NavigationContainer extends Component {
 NavigationContainer.propTypes = {
   user: PropTypes.any,
   isAuthed: PropTypes.bool.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
-function mapStateToProps ({users}) {
+function mapStateToProps ({users, router}) {
   return {
     isAuthed: users.isAuthed,
     user: users[users.authedId],
+    location: router.location,
   }
 }
 

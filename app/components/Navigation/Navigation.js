@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Menu, Dropdown, Icon, Image } from 'semantic-ui-react'
+import {ModalContainer} from '../../containers'
 
 Navigation.propTypes = {
   isAuthed: PropTypes.bool.isRequired,
   user: PropTypes.any,
   mailOptions: PropTypes.array.isRequired,
   alarmOptions: PropTypes.array.isRequired,
+  location: PropTypes.object.isRequired,
 }
 
 const alarmTrigger = (
@@ -17,7 +19,7 @@ const mailTrigger = (
   <span><Icon size='large' name='mail' /></span>
 )
 
-export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions }) {
+export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions, location }) {
   return (
     isAuthed === true
       ? <Menu borderless={true}>
@@ -27,6 +29,9 @@ export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions 
             src={require('../../assets/images/crt425.png')}
             style={{ marginRight: '1.5em', marginLeft: '1.5em' }}/>
           <span style={{color: 'black', fontSize: 'large'}}>Xialiao</span>
+        </Menu.Item>
+        <Menu.Item>
+          <ModalContainer />
         </Menu.Item>
         <Menu.Menu position='right'>
           <Dropdown
@@ -56,14 +61,16 @@ export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions 
       </Menu>
       : <Menu borderless={true}>
         <Menu.Item as={Link} to='/' position='left'>
-        Home
+          Home
         </Menu.Item>
-        <Menu.Item as={Link} to='/login' position='right'>
-        Login
-        </Menu.Item>
-        <Menu.Item as={Link} to='/'>
-        Sing up
-        </Menu.Item>
+        {location.pathname === '/' &&
+        <Menu.Item as={Link} to='/auth/login'>
+          Login
+        </Menu.Item>}
+        {location.pathname === '/' &&
+        <Menu.Item as={Link} to='/auth/signUp'>
+          Sign Up
+        </Menu.Item>}
       </Menu>
   )
 }

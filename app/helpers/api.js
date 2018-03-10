@@ -1,7 +1,7 @@
 import { ref } from 'config/constants'
 
 function saveToDucks (duck) {
-  const duckId = ref.child('ducks').push().key
+  const duckId = ref.child('ducks').push({}).key()
   const duckPromise = ref.child(`ducks/${duckId}`).set({...duck, duckId})
 
   return {
@@ -30,9 +30,10 @@ export function saveDuck (duck) {
   ]).then(() => ({...duck, duckId}))
 }
 
-function saveToReceiversInbox (message, receiverId) {
-  const messageId = ref.child(`mailbox/${receiverId}/inbox`).push().key
-  const messagePromise = ref.child(`mailbox/${receiverId}/inbox/${messageId}`).set({...message, messageId})
+function saveToUsersInbox (message) {
+  const messageId = ref.child(`usersInbox/${message.receiverId}`).push({}).key()
+  const messagePromise = ref.child(`usersInbox/${message.receiverId}/${messageId}`)
+    .set({...message, messageId})
 
   return {
     messageId,
@@ -40,25 +41,24 @@ function saveToReceiversInbox (message, receiverId) {
   }
 }
 
-function saveToSendersSent (messageId, message, senderId) {
-  return ref.child(`mailbox/${senderId}/sent/${messageId}`)
+function saveToUsersSent (messageId, message) {
+  return ref.child(`usersSent/${message.senderId}/${messageId}`)
     .set({...message, messageId})
 }
 
-function saveToReceiversUnread (messageId, senderId, receiverId) {
-  return ref.child(`mailbox/${receiverId}/unread/${messageId}`)
-    .set(senderId)
+function saveToUsersUnread (messageId, message) {
+  return ref.child(`uersUnread/${message.receiverId}/${messageId}`)
+    .set(message.timestamp)
 }
 
 export function saveMessage (message) {
-  console.log({'api received': message})
-  const {senderId, receiverId} = message
-  const {messageId, messagePromise} = saveToReceiversInbox(message, receiverId)
+  console.log({'calling api to save message: ': message})
+  const {messageId, messagePromise} = saveToUsersInbox(message)
 
   return Promise.all([
     messagePromise,
-    saveToSendersSent(messageId, message, senderId),
-    saveToReceiversUnread(messageId, senderId, receiverId),
+    saveToUsersSent(messageId, message),
+    saveToUsersUnread(messageId, message),
   ]).then(() => ({...message, messageId}))
 }
 
@@ -73,6 +73,34 @@ export function listenToFeed (cb, errorCb) {
     let initialFetch = timesCalled++ <= 0
     cb({feed, sortedIds}, initialFetch)
   }, errorCb)
+}
+
+export function listenToUsersUnread (uid, cb, errorCb) {
+  let timesCalled = 0
+  ref.child(`uersUnread/${uid}`).on('value', (snapshot) => {
+    const unread = snapshot.val() || {}
+    const sortedIds = Object.keys(unread).sort((a, b) => {
+      return unread[b].timestamp - unread[a].timestamp
+    })
+
+    let initialFetch = timesCalled++ <= 0
+    cb({messages, sortedIds}, initialFetch)
+  }, errorCb)
+}
+
+export function deleteFromUsersUnread (messages) {
+  return ref.child('usersUnread')
+    .update(messages)
+}
+
+export function fetchUserInbox (uid) {
+  return ref.child(`usersInbox/${uid}`).once('value')
+    .then((snapshot) => snapshot.val() || {})
+}
+
+export function fetchUserSent (uid) {
+  return ref.child(`usersSent/${uid}`).once('value')
+    .then((snapshot) => snapshot.val() || {})
 }
 
 export function fetchUsersLikes (uid) {
@@ -119,7 +147,7 @@ export function fetchLikeCount (duckId) {
 }
 
 export function postReply (duckId, reply) {
-  const replyId = ref.child(`replies/${duckId}`).push().key
+  const replyId = ref.child(`replies/${duckId}`).push({}).key()
   const replyWithId = {...reply, replyId}
   const replyPromise = ref.child(`replies/${duckId}/${replyId}`).set(replyWithId)
 
@@ -131,5 +159,14 @@ export function postReply (duckId, reply) {
 
 export function fetchReplies (duckId) {
   return ref.child(`replies/${duckId}`).once('value')
+    .then((snapshot) => snapshot.val() || {})
+}
+
+export function fetchUserList (searchQuery) {
+  console.log(`calling api to fetch user list with: ${searchQuery}`)
+  return ref.child('users')
+    .orderByChild('name')
+    .startAt(searchQuery)
+    .once('value')
     .then((snapshot) => snapshot.val() || {})
 }

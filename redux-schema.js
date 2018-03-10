@@ -43,7 +43,7 @@
     error,
     [uid]: {
       lastUpdated,
-      ducksIds: [duckId, duckId, duckId]
+      ducksIds: [...duckId]
     }
   },
   usersLikes: {
@@ -53,8 +53,8 @@
     isFetching,
     error,
     newDucksAvailable,
-    duckIdsToAdd: [duckId, duckId],
-    duckIds: [duckId, duckId, duckId]
+    duckIdsToAdd: [...duckId],
+    duckIds: [...duckId]
   },
   replies: {
     isFetching,
@@ -73,25 +73,34 @@
     }
   },
   listeners: {
-    [listenerId]: true
+    [listenerId]: true，
+  },
+  message: {
+    [messageId]: {
+      senderId,
+      receiverId,
+      text,
+      subject,
+      timestamp,
+      messageId,
+    }
   }
   inbox: {
     isFetching,
     error,
-    unread: [messageId, messageId, messageId]
-    [messageId]: {
-      text
-      created
-      senderId
-    }
+    messageIds: [...messageId],
   },
   sent: {
     isFetching,
     error,
-    [messageId]: {
-      text
-      created
-      receiverId
-    }
+    messageIds: [...messageId],
+  },
+  unread: {
+    isFetching,
+    error,
+    messageIds: [...messageId],
+    localRead: {
+      messageId: true,
+    },
   }
 }

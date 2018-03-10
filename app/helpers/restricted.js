@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { checkIfAuthed } from './auth'
+import { replace } from 'react-router-redux'
 
 export default (BaseComponent, store) => {
   class Restricted extends Component {
@@ -19,16 +20,18 @@ export default (BaseComponent, store) => {
         return
       }
 
-      const { history } = props
-      const nextPathName = history.location.pathname
+      const nextPathName = location.pathname
       const isAuthed = checkIfAuthed(store)
-      if (nextPathName === '/' || nextPathName === '/login') {
+      if (nextPathName === '/' ||
+          nextPathName === '/auth/login' ||
+          nextPathName === '/auth/signUp' ||
+          nextPathName === '/auth') {
         if (isAuthed === true) {
-          history.replace({ pathname: '/feed' })
+          store.dispatch(replace('/feed'))
         }
       } else {
         if (isAuthed !== true) {
-          history.replace({ pathname: '/login' })
+          store.dispatch(replace('/auth'))
         }
       }
     }

@@ -1,10 +1,8 @@
-import { inbox } from "./app/redux/modules/inbox";
-
 // Reference for the firebase schema
 // Not valid JS and not used in the project
 
 /users
-  uid
+  /uid
     name
     uid
     avatar
@@ -20,7 +18,7 @@ import { inbox } from "./app/redux/modules/inbox";
       timestamp
 
 /ducks
-  duckId
+  /duckId
     avatar
     duckId
     name
@@ -29,7 +27,7 @@ import { inbox } from "./app/redux/modules/inbox";
     uid (of duck author)
 
 /likeCount
-  duckId
+  /duckId
     0
 
 /userDucks
@@ -43,8 +41,8 @@ import { inbox } from "./app/redux/modules/inbox";
       uid (of duck author)
 
 /replies
-  duckId
-    replyId
+  /duckId
+    /replyId
       name
       comment
       uid
@@ -52,23 +50,35 @@ import { inbox } from "./app/redux/modules/inbox";
       avatar
 
 /usersLikes
-  uid
+  /uid
     duckId: true
 
-/mailbox
-  uid
-    unread
-    inbox
-      messageIds
-        text
-        subject
-        sender
-        receiver
-        created
-    sent
-      messageIds
-        text
-        title
-        sender
-        receiver
-        created
+/usersInbox
+  /uid
+    /messageId
+      senderId,
+      receiverId,
+      text,
+      subject,
+      timestamp,
+      messageId
+
+/usersSent
+  /uid
+    /messageId
+      senderId,
+      receiverId,
+      text,
+      subject,
+      timestamp,
+      messageId
+  
+/usersUnread
+  /uid
+    /messageId
+      senderId,
+      receiverId,
+      text,
+      subject,
+      timestamp,
+      messageId

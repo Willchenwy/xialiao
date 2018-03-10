@@ -1,6 +1,6 @@
-import { ref, firebaseAuth } from 'config/constants'
+import { ref, firebaseAuth, wilddogAuth } from 'config/constants'
 
-export function auth (authType) {
+export function authWithThirdParty (authType) {
   switch (authType) {
     case 'FACEBOOK_AUTH':
       return firebaseAuth().signInWithPopup(new firebaseAuth.FacebookAuthProvider())
@@ -10,16 +10,27 @@ export function auth (authType) {
   }
 }
 
+export function authWithXialiao (email, password) {
+  return wilddogAuth.signInWithEmailAndPassword(email, password)
+}
+
 export function checkIfAuthed (store) {
   return store.getState().users.isAuthed
 }
 
 export function logout () {
-  return firebaseAuth().signOut()
+  return wilddogAuth.signOut()
 }
 
 export function saveUser (user) {
   return ref.child(`users/${user.uid}`)
     .set(user)
     .then(() => user)
+}
+
+export function signUpUser (email, password, displayName) {
+  return wilddogAuth.createUserWithEmailAndPassword(email, password)
+    .then((currentUser) => currentUser.updateProfile({
+      'displayName': displayName,
+    }))
 }

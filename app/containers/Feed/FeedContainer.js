@@ -8,7 +8,7 @@ import ComposeContainer from '../Compose/ComposeContainer'
 import * as feedActionCreators from 'redux/modules/feed'
 import { duckFanout } from '../../redux/modules/ducks'
 import { formatDuck } from '../../helpers/utils'
-import {reset} from 'redux-form'
+import { reset } from 'redux-form'
 
 class FeedContainer extends Component {
   componentDidMount () {

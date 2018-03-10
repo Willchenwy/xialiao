@@ -1,83 +1,72 @@
-// const FETCHING_SENT = 'FETCHING_SENT'
-// const FETCHING_SENT_FAILURE = 'FETCHING_SENT_FAILURE'
-// const FETCHING_SENT_SUCCESS = 'FETCHING_SENT_SUCCESS'
-// const REMOVE_SENT_FETCHING = 'REMOVE_SENT_FETCHING'
-// const ADD_SINGLE_MESSADE_TO_SENT = 'ADD_SINGLE_MESSADE_TO_SENT'
+import { fetchUserSent } from '../../helpers/api'
+import { addMultipleMessages } from './messages'
 
-// export function fetchingSent () {
-//   return {
-//     type: FETCHING_SENT,
-//   }
-// }
+const FETCHING_SENT = 'FETCHING_SENT'
+const FETCHING_SENT_FAILURE = 'FETCHING_SENT_FAILURE'
+const FETCHING_SENT_SUCCESS = 'FETCHING_SENT_SUCCESS'
 
-// export function fetchingSentFailure (error) {
-//   console.warn(error)
-//   return {
-//     type: FETCHING_SENT_FAILURE,
-//     error: 'Error fetching sent',
-//   }
-// }
+function fetchingSent () {
+  return {
+    type: FETCHING_SENT,
+  }
+}
 
-// export function fetchingSentSuccess (messages) {
-//   return {
-//     type: FETCHING_SENT_SUCCESS,
-//     messages,
-//   }
-// }
+function fetchingSentFailure (error) {
+  console.warn(error)
+  return {
+    type: FETCHING_SENT_FAILURE,
+    error: 'Error fetching sent',
+  }
+}
 
-// export function removeSentFetching () {
-//   return {
-//     type: REMOVE_SENT_FETCHING,
-//   }
-// }
+function fetchingSentSuccess (messageIds) {
+  return {
+    type: FETCHING_SENT_SUCCESS,
+    messageIds,
+  }
+}
 
-// export function fanoutMessage (message) {
+export function fetchAndHandleSent () {
+  return function (dispatch, getState) {
+    const uid = getState().users.authedId
+    dispatch(fetchingSent())
+    fetchUserSent(uid)
+      .then((messages) => dispatch(addMultipleMessages(messages)))
+      .then(({ messages }) => dispatch(
+        fetchingSentSuccess(
+          Object.keys(messages).sort((a, b) => messages[b].timestamp - messages[a].timestamp),
+        )
+      ))
+      .catch((error) => dispatch(fetchingSentFailure(error)))
+  }
+}
 
-// }
+const initialState = {
+  isFetching: false,
+  error: '',
+  messageIds: [],
+}
 
-// export function addSingleMessageIDToSent (message) {
-//   return {
-//     type: ADD_SINGLE_MESSADE_TO_SENT,
-//     message,
-//   }
-// }
-
-// const initialState = {
-//   isFetching: false,
-//   error: '',
-// }
-
-// export default function messages (state = initialState, action) {
-//   switch (action.type) {
-//     case FETCHING_SENT:
-//       return {
-//         ...state,
-//         isFetching: true,
-//       }
-//     case FETCHING_SENT_FAILURE:
-//       return {
-//         ...state,
-//         isFetching: false,
-//         error: action.error,
-//       }
-//     case FETCHING_SENT_SUCCESS:
-//       return {
-//         ...state,
-//         isFetching: false,
-//         ...action.messages,
-//       }
-//     case ADD_SINGLE_MESSADE_TO_SENT:
-//       return {
-//         ...state,
-//         [action.message.MessageId]: action.message,
-//       }
-//     case REMOVE_SENT_FETCHING:
-//       return {
-//         ...state,
-//         isFetching: false,
-//         error: '',
-//       }
-//     default:
-//       return state
-//   }
-// }
+export default function messages (state = initialState, action) {
+  switch (action.type) {
+    case FETCHING_SENT:
+      return {
+        ...state,
+        isFetching: true,
+      }
+    case FETCHING_SENT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error,
+      }
+    case FETCHING_SENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        messageIds: action.messageIds,
+      }
+    default:
+      return state
+  }
+}

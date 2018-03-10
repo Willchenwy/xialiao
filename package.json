@@ -27,9 +27,11 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "redux": "^3.7.2",
     "redux-form": "^7.2.3",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
-    "semantic-ui-css": "^2.3.0"
+    "semantic-ui-css": "^2.3.0",
+    "wilddog": "^2.5.17"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

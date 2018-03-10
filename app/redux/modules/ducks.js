@@ -57,7 +57,6 @@ export function duckFanout (duck) {
       saveDuck(duck)
         .then((duckWithId) => {
           dispatch(addDuck(duckWithId))
-          dispatch(closeModal())
           dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
         })
         .catch((error) => console.warn('Error in duckFanout: ', error))

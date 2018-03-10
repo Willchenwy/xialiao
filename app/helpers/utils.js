@@ -1,7 +1,7 @@
 import { usersDucksExpirationLength, userExpirationLength,
   repliesExpirationLength } from 'config/constants'
 
-export function formatUserInfo (name, avatar, uid) {
+export function formatUserInfo (name, avatar = '', uid) {
   return {
     name,
     avatar,
@@ -19,14 +19,44 @@ export function formatDuck (text, {avatar, name, uid}) {
   }
 }
 
-export function formatMessage (text, subject, senderId, receiverId) {
+export function formatMessage ({text, subject}, senderId, userIds) {
   return {
+    senderId,
+    receiverId: userIds[0],
     text,
     subject,
-    senderId,
-    receiverId,
     timestamp: Date.now(),
   }
+}
+
+export function formatUserList (response, searchQuery) {
+  return Object.keys(response)
+    .filter((key) => (response[key].name.startsWith(searchQuery)))
+    .reduce((userInfo, key) => {
+      userInfo.userList = [
+        ...userInfo.userList,
+        {
+          text: response[key].name,
+          value: response[key].name,
+          image: { avatar: true, src: response[key].avatar },
+        },
+      ]
+      userInfo.userIds = [
+        ...userInfo.userIds,
+        response[key].uid,
+      ]
+      return userInfo
+    }, {userList: [], userIds: []})
+}
+
+export function formatRemove (messages, uid) {
+  return Object.keys(messages)
+    .reduce((obj, messageId) => {
+      return {
+        ...obj,
+        'uid/messageId': null,
+      }
+    }, {})
 }
 
 export function formatTimestamp (timestamp) {

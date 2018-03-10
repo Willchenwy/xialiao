@@ -17,7 +17,7 @@ class DuckContainer extends Component {
 
   goToProfile (e) {
     e.stopPropagation()
-    store.dispatch(push(`/${this.props.duck.uid}`))
+    store.dispatch(push(`user/${this.props.duck.uid}`))
   }
 
   handleClick (e) {
