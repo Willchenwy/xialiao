@@ -1,53 +1,45 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
-import { connect } from 'react-redux'
-import { Form, Button, Grid } from 'semantic-ui-react'
+import { Form, Button } from 'semantic-ui-react'
 
-class SignUp extends Component {
-  render () {
-    const {handleSubmit, handleFormSubmit, isSigning} = this.props
-    return (
-      <Grid.Column style={{marginLeft: '68px'}}>
-        <Form onSubmit={handleSubmit(handleFormSubmit)}>
-          <Form.Field>
-            <Field
-              name='displayName'
-              component='input'
-              type='text'
-              placeholder='username'/>
-          </Form.Field>
-          <Form.Field>
-            <Field
-              name='email'
-              component='input'
-              type='text'
-              placeholder='e-mail'/>
-          </Form.Field>
-          <Form.Field>
-            <Field
-              name='password'
-              component='input'
-              type='text'
-              placeholder='password'/>
-          </Form.Field>
-          <Button
-            loading = {isSigning}
-            type='submit'>Sign Up</Button>
-        </Form>
-      </Grid.Column>
-    )
-  }
+function SignUp ({handleSubmit, handleSignUp, signingUp}) {
+  return (
+    <Form onSubmit={handleSubmit(handleSignUp)}>
+      <Form.Field>
+        <Field
+          name='displayName'
+          component='input'
+          type='text'
+          placeholder='username'/>
+      </Form.Field>
+      <Form.Field>
+        <Field
+          name='email'
+          component='input'
+          type='text'
+          placeholder='e-mail'/>
+      </Form.Field>
+      <Form.Field>
+        <Field
+          name='password'
+          component='input'
+          type='text'
+          placeholder='password'/>
+      </Form.Field>
+      <Button
+        loading = {signingUp === true}
+        type='submit'>Sign Up</Button>
+    </Form>
+  )
 }
 
 SignUp.propTypes = {
-  isSigning: PropTypes.bool.isRequired,
-  handleFormSubmit: PropTypes.func.isRequired,
+  signingUp: PropTypes.any,
+  handleSignUp: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 }
 
-const ReduxForm = reduxForm({
+export default reduxForm({
   form: 'signUp',
 })(SignUp)
-
-export default connect()(ReduxForm)

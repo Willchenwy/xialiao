@@ -8,13 +8,13 @@ const SETTING_FEED_LISTENER_SUCCESS = 'SETTING_FEED_LISTENER_SUCCESS'
 const ADD_NEW_DUCK_ID_TO_FEED = 'ADD_NEW_DUCK_ID_TO_FEED'
 const RESET_NEW_DUCKS_AVAILABLE = 'RESET_NEW_DUCKS_AVAILABLE'
 
-export function settingFeedListener () {
+function settingFeedListener () {
   return {
     type: SETTING_FEED_LISTENER,
   }
 }
 
-export function settingFeedListenerFailure (error) {
+function settingFeedListenerFailure (error) {
   console.warn(error)
   return {
     type: SETTING_FEED_LISTENER_FAILURE,
@@ -22,7 +22,7 @@ export function settingFeedListenerFailure (error) {
   }
 }
 
-export function settingFeedListenerSuccess (duckIds) {
+function settingFeedListenerSuccess (duckIds) {
   return {
     type: SETTING_FEED_LISTENER_SUCCESS,
     duckIds,

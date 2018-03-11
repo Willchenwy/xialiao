@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Navigation } from 'components'
 import { connect } from 'react-redux'
+import { logout } from 'redux/modules/authentication'
 
 const mailOptions = [
   { key: 'mail', text: 'No mail' },
@@ -12,33 +13,39 @@ const alarmOptions = [
 ]
 
 class NavigationContainer extends Component {
+  hendleLogout = (e) => {
+    e.stopPropagation()
+    this.props.dispatch(logout())
+  }
+
   render () {
     return (
       <Navigation
-        isAuthed={this.props.isAuthed}
+        loggedIn={this.props.loggedIn}
         user={this.props.user}
         mailOptions={mailOptions}
         alarmOptions={alarmOptions}
-        location={this.props.location}/>
+        location={this.props.location}
+        hendleLogout={this.hendleLogout}/>
     )
   }
 }
 
 NavigationContainer.propTypes = {
-  user: PropTypes.any,
-  isAuthed: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 }
 
-function mapStateToProps ({users, router}) {
+function mapStateToProps ({authentication, router}) {
   return {
-    isAuthed: users.isAuthed,
-    user: users[users.authedId],
+    loggedIn: authentication.loggedIn,
+    user: authentication.user,
     location: router.location,
   }
 }
 
 export default connect(
   mapStateToProps,
-  null,
 )(NavigationContainer)

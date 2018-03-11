@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { reduxForm, Field } from 'redux-form'
-import { connect } from 'react-redux'
 import { Form, Button, Grid, TextArea, Divider, Segment } from 'semantic-ui-react'
 
 const inputBox = (field) => {
@@ -43,10 +42,6 @@ class ComposeContainer extends Component {
   }
 }
 
-const ReduxForm = reduxForm({
-  form: 'compose',
-})(ComposeContainer)
-
 ComposeContainer.propTypes = {
   pristine: PropTypes.bool.isRequired,
   reset: PropTypes.func.isRequired,
@@ -56,4 +51,6 @@ ComposeContainer.propTypes = {
   style: PropTypes.object.isRequired,
 }
 
-export default connect()(ReduxForm)
+export default reduxForm({
+  form: 'compose',
+})(ComposeContainer)

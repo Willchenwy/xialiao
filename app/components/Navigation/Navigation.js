@@ -5,11 +5,12 @@ import { Menu, Dropdown, Icon, Image } from 'semantic-ui-react'
 import {ModalContainer} from '../../containers'
 
 Navigation.propTypes = {
-  isAuthed: PropTypes.bool.isRequired,
-  user: PropTypes.any,
+  loggedIn: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
   mailOptions: PropTypes.array.isRequired,
   alarmOptions: PropTypes.array.isRequired,
   location: PropTypes.object.isRequired,
+  hendleLogout: PropTypes.func.isRequired,
 }
 
 const alarmTrigger = (
@@ -19,9 +20,9 @@ const mailTrigger = (
   <span><Icon size='large' name='mail' /></span>
 )
 
-export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions, location }) {
+export default function Navigation ({ loggedIn, user, mailOptions, alarmOptions, location, hendleLogout }) {
   return (
-    isAuthed === true
+    loggedIn === true
       ? <Menu borderless={true}>
         <Menu.Item as={Link} to='/'>
           <Image
@@ -48,13 +49,13 @@ export default function Navigation ({ isAuthed, user, mailOptions, alarmOptions,
             icon={null} />
           <Dropdown
             pointing='top'
-            text={user.info.name}
+            text={user.name}
             className='link item'
             style={{ marginRight: '1.5em' }}>
             <Dropdown.Menu>
               <Dropdown.Item as={Link} to='/'>My Account</Dropdown.Item>
               <Dropdown.Item as={Link} to='/'>Setting</Dropdown.Item>
-              <Dropdown.Item as={Link} to='/logout'>Logout</Dropdown.Item>
+              <Dropdown.Item onClick={hendleLogout}>Logout</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Menu>

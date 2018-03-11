@@ -4,33 +4,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Duck } from 'components'
 import * as usersLikesActions from 'redux/modules/usersLikes'
-import { store } from '../../index'
-import { push } from 'react-router-redux'
 
 class DuckContainer extends Component {
-  constructor (props) {
-    super(props)
-
-    this.handleClick = this.handleClick.bind(this)
-    this.goToProfile = this.goToProfile.bind(this)
-  }
-
-  goToProfile (e) {
-    e.stopPropagation()
-    store.dispatch(push(`user/${this.props.duck.uid}`))
-  }
-
-  handleClick (e) {
-    e.stopPropagation()
-    store.dispatch(push(`/duck-detail/${this.props.duck.duckId}`))
-  }
-
   render () {
     return (
-      <Duck
-        goToProfile={this.goToProfile}
-        onClick={this.handleClick}
-        {...this.props} />
+      <Duck {...this.props} />
     )
   }
 }
@@ -54,13 +32,14 @@ DuckContainer.defaultProps = {
   hideLikeCount: true,
 }
 
-function mapStateToProps ({ ducks, likeCount, usersLikes }, props) {
+function mapStateToProps ({ ducks, likeCount, usersLikes, router }, props) {
   return {
     duck: ducks[props.duckId],
     hideLikeCount: props.hideLikeCount,
     hideReplyBtn: props.hideReplyBtn,
     isLiked: usersLikes[props.duckId] === true,
     numberOfLikes: likeCount[props.duckId],
+    pathname: router.location.pathname,
   }
 }
 

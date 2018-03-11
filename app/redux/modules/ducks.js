@@ -1,6 +1,7 @@
 import { saveDuck, fetchDuck } from 'helpers/api'
-import { closeModal } from './modal'
 import { addSingleUsersDuck } from './usersDucks'
+import { reset } from 'redux-form'
+import { store } from '../../index'
 
 const FETCHING_DUCK = 'FETCHING_DUCK'
 const FETCHING_DUCK_FAILURE = 'FETCHING_DUCK_FAILURE'
@@ -59,6 +60,7 @@ export function duckFanout (duck) {
           dispatch(addDuck(duckWithId))
           dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
         })
+        .then(store.dispatch(reset('compose')))
         .catch((error) => console.warn('Error in duckFanout: ', error))
     )
   }

@@ -9,13 +9,13 @@ const FETCHING_LIKES = 'FETCHING_LIKES'
 const FETCHING_LIKES_FAILURE = 'FETCHING_LIKES_FAILURE'
 const FETCHING_LIKES_SUCCESS = 'FETCHING_LIKES_SUCCESS'
 
-export function fetchingLikes () {
+function fetchingLikes () {
   return {
     type: FETCHING_LIKES,
   }
 }
 
-export function fetchingLikesFailure (error) {
+function fetchingLikesFailure (error) {
   console.warn(error)
   return {
     type: FETCHING_LIKES_FAILURE,
@@ -23,21 +23,21 @@ export function fetchingLikesFailure (error) {
   }
 }
 
-export function fetchingLikesSuccess (likes) {
+function fetchingLikesSuccess (likes) {
   return {
     type: FETCHING_LIKES_SUCCESS,
     likes,
   }
 }
 
-export function addLike (duckId) {
+function addLike (duckId) {
   return {
     type: ADD_LIKE,
     duckId,
   }
 }
 
-export function removeLike (duckId) {
+function removeLike (duckId) {
   return {
     type: REMOVE_LIKE,
     duckId,

@@ -1,11 +1,11 @@
 import { usersDucksExpirationLength, userExpirationLength,
   repliesExpirationLength } from 'config/constants'
 
-export function formatUserInfo (name, avatar = '', uid) {
+export function formatUserInfo ({ displayName, photoURL = '', uid, localId }) {
   return {
-    name,
-    avatar,
-    uid,
+    name: displayName,
+    avatar: photoURL,
+    uid: uid === undefined ? localId : uid,
   }
 }
 

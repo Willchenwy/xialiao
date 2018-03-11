@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Grid } from 'semantic-ui-react'
+import { Container, Grid } from 'semantic-ui-react'
 import { DuckDetails } from 'components'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
@@ -29,13 +29,15 @@ class DuckDetailsContainer extends Component {
 
   render () {
     return (
-      <Grid>
-        <DuckDetails
-          duck={this.props.ducks[this.props.duckId]}
-          isFetching={this.props.isFetching}
-          error={this.props.error}
-          handleFormSubmit={this.handleFormSubmit} />
-      </Grid>
+      <Container text={true}>
+        <Grid>
+          <DuckDetails
+            duck={this.props.ducks[this.props.duckId]}
+            isFetching={this.props.isFetching}
+            error={this.props.error}
+            handleFormSubmit={this.handleFormSubmit} />
+        </Grid>
+      </Container>
     )
   }
 }
@@ -54,12 +56,12 @@ DuckDetailsContainer.propTypes = {
   reset: PropTypes.func.isRequired,
 }
 
-function mapStateToProps ({ ducks, likeCount, users }, props) {
+function mapStateToProps ({ ducks, likeCount, authentication }, props) {
   const duckId = props.match.params.duckId
   return {
     ducks,
     duckId,
-    authedUser: users[users.authedId].info,
+    authedUser: authentication.user,
     isFetching: ducks.isFetching || likeCount.isFetching,
     error: ducks.error,
     duckAlreadyFetched: !!ducks[duckId],

@@ -52,14 +52,14 @@ function saveToUsersUnread (messageId, message) {
 }
 
 export function saveMessage (message) {
-  console.log({'calling api to save message: ': message})
   const {messageId, messagePromise} = saveToUsersInbox(message)
 
   return Promise.all([
     messagePromise,
     saveToUsersSent(messageId, message),
     saveToUsersUnread(messageId, message),
-  ]).then(() => ({...message, messageId}))
+  ])
+    .then(() => ({...message, messageId}))
 }
 
 export function listenToFeed (cb, errorCb) {
@@ -163,7 +163,6 @@ export function fetchReplies (duckId) {
 }
 
 export function fetchUserList (searchQuery) {
-  console.log(`calling api to fetch user list with: ${searchQuery}`)
   return ref.child('users')
     .orderByChild('name')
     .startAt(searchQuery)

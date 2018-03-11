@@ -7,8 +7,7 @@ export default function Home (props) {
       <style>{`
       body > div,
       body > div > div,
-      body > div > div > div.container,
-      body > div > div > div.container > div.login-form {
+      body > div > div > div.login-form {
         height: 100%;
       }
     `}</style>

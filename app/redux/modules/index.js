@@ -7,8 +7,9 @@ import listenersReducer from './listeners'
 import usersLikesReducer from './usersLikes'
 import likeCountReducer from './likeCount'
 import newMessageReducer from './newMessage'
-import { reducer as formReducer } from 'redux-form'
 import repliesReducer from './replies'
+import authenticationReducer from './authentication'
+import { reducer as formReducer } from 'redux-form'
 import { routerReducer } from 'react-router-redux'
 import { persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/es/storage'
@@ -16,7 +17,7 @@ import storage from 'redux-persist/es/storage'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [],
+  whitelist: ['authentication'],
 }
 
 const rootReducer = persistCombineReducers(persistConfig, {
@@ -32,6 +33,7 @@ const rootReducer = persistCombineReducers(persistConfig, {
   replies: repliesReducer,
   newMessage: newMessageReducer,
   form: formReducer,
+  authentication: authenticationReducer,
 })
 
 export default rootReducer
