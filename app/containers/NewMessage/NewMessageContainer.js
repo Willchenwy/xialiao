@@ -44,9 +44,9 @@ NewMessageContainer.propTypes = {
   sendMessage: PropTypes.func.isRequired,
 }
 
-function mapStateToProps ({users, newMessage}) {
+function mapStateToProps ({authentication, newMessage}) {
   return {
-    authedUser: users.authedId,
+    authedUser: authentication.user.uid,
     userIds: newMessage.userIds,
     userList: newMessage.userList,
     isFetching: newMessage.isFetching,
