@@ -4,17 +4,20 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Duck } from 'components'
 import * as usersLikesActions from 'redux/modules/usersLikes'
+import { store } from '../../index'
+import { push } from 'react-router-redux'
 
 class DuckContainer extends Component {
+
+  goToDuckDetail = () => (
+    store.dispatch(push(this.props.duck.uid))
+  )
+
   render () {
     return (
       <Duck {...this.props} />
     )
   }
-}
-
-DuckContainer.contextTypes = {
-  router: PropTypes.object.isRequired,
 }
 
 DuckContainer.propTypes = {
@@ -25,6 +28,7 @@ DuckContainer.propTypes = {
   hideReplyBtn: PropTypes.bool.isRequired,
   handleDeleteLike: PropTypes.func.isRequired,
   addAndHandleLike: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
 }
 
 DuckContainer.defaultProps = {

@@ -6,7 +6,6 @@ import { User } from 'components'
 import * as usersActionCreators from 'redux/modules/users'
 import * as usersDucksActionCreators from 'redux/modules/usersDucks'
 import { staleUser, staleDucks } from 'helpers/utils'
-import { Grid } from 'semantic-ui-react'
 
 class UserContainer extends Component {
   componentDidMount () {
@@ -23,16 +22,14 @@ class UserContainer extends Component {
   render () {
     const {noUser, user, isFetching, error, duckIds, match, location} = this.props
     return (
-      <Grid>
-        <User
-          noUser={noUser}
-          user={user}
-          isFetching={isFetching}
-          error={error}
-          duckIds={duckIds}
-          match={match}
-          location={location}/>
-      </Grid>
+      <User
+        noUser={noUser}
+        user={user}
+        isFetching={isFetching}
+        error={error}
+        duckIds={duckIds}
+        match={match}
+        location={location} />
     )
   }
 }

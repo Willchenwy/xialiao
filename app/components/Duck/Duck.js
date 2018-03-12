@@ -8,33 +8,33 @@ export default function Duck (props) {
   const starFn = props.isLiked === true ? props.handleDeleteLike : props.addAndHandleLike
   return (
     <Segment raised={true}>
-        <Feed>
-          <Feed.Event>
-            {!props.hideReplyBtn && <Feed.Label image={props.duck.avatar} />}
-            <Feed.Content>
-              {!props.hideReplyBtn &&
+      <Feed>
+        <Feed.Event>
+          {!props.hideReplyBtn && <Feed.Label image={props.duck.avatar} />}
+          <Feed.Content>
+            {!props.hideReplyBtn &&
                 <Feed.Summary>
                   <Feed.User as={Link} to={`/user/${props.duck.uid}`}>
                     {props.duck.name}
                   </Feed.User>
                   <Feed.Date>{formatTimestamp(props.duck.timestamp)}</Feed.Date>
                 </Feed.Summary>}
-              <Feed.Extra text={true} as={Link} to={`duckDetail/${props.duck.duckId}`}>
-                {props.duck.text}
-              </Feed.Extra>
-              <Feed.Meta style={{float: 'right'}}>
-                {!props.hideReplyBtn && <Icon name='reply' />}
-                <Feed.Like>
-                  <Icon
-                    name='favorite'
-                    color={props.isLiked === true ? 'yellow' : 'grey'}
-                    onClick={(e) => starFn(props.duck.duckId, e)} />
-                  {!props.hideLikeCount && <span>{props.numberOfLikes}</span>}
-                </Feed.Like>
-              </Feed.Meta>
-            </Feed.Content>
-          </Feed.Event>
-        </Feed>
+            <Feed.Extra text={true} as={Link} to={`/duckDetail/${props.duck.duckId}`}>
+              {props.duck.text}
+            </Feed.Extra>
+            <Feed.Meta style={{float: 'right'}}>
+              {!props.hideReplyBtn && <Icon name='reply' />}
+              <Feed.Like>
+                <Icon
+                  name='favorite'
+                  color={props.isLiked === true ? 'yellow' : 'grey'}
+                  onClick={(e) => starFn(props.duck.duckId, e)} />
+                {!props.hideLikeCount && <span>{props.numberOfLikes}</span>}
+              </Feed.Like>
+            </Feed.Meta>
+          </Feed.Content>
+        </Feed.Event>
+      </Feed>
     </Segment>
   )
 }
