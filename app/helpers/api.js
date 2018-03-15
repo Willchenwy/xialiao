@@ -69,9 +69,9 @@ export function listenToFeed (cb, errorCb) {
     const sortedIds = Object.keys(feed).sort((a, b) => {
       return feed[b].timestamp - feed[a].timestamp
     })
-
+    const data = {feed, sortedIds}
     let initialFetch = timesCalled++ <= 0
-    cb({feed, sortedIds}, initialFetch)
+    cb(data, initialFetch)
   }, errorCb)
 }
 
@@ -84,7 +84,20 @@ export function listenToUsersUnread (uid, cb, errorCb) {
     })
 
     let initialFetch = timesCalled++ <= 0
-    cb({messages, sortedIds}, initialFetch)
+    const data = {messages, sortedIds}
+    cb(data, initialFetch)
+  }, errorCb)
+}
+
+export function listenToUsers (cb, errorCb) {
+  let timesCalled = 0
+  ref.child('users').on('value', (snapshot) => {
+    const users = snapshot.val() || {}
+
+    let initialFetch = timesCalled++ <= 0
+    const uids = Object.keys(users)
+    const data = {users, uids}
+    cb(data, initialFetch)
   }, errorCb)
 }
 

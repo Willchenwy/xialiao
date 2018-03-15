@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Dimmer, Loader, Image as ImageComponent, Segment, Input, Tab, Feed, Card, Grid } from 'semantic-ui-react'
+import { Menu, Dimmer, Loader, Image as ImageComponent, Segment, Input, Header, Feed, Card, Grid } from 'semantic-ui-react'
 import { NavLink, Switch, Route, Redirect } from 'react-router-dom'
 
 const SenderAbstract = ({message}) => (
@@ -43,36 +43,38 @@ function Inbox ({isFetchingInbox, inboxMessageIds, messages, match}) {
         <ImageComponent src={require('../../assets/images/wireframe/paragraph.png')} />
       </Segment>
       : <Grid>
-        <Grid.Row>
-          <Grid.Column width={5}>
-            <Menu secondary={true} vertical={true}>
-              {inboxMessageIds.map(
-                id =>
-                  <Menu.Item
-                    key={id}
-                    as={NavLink}
-                    to={`${match.url}/${id}`}
-                    content={<SenderAbstract message={messages[id]} key={id}/>}
-                    style={{padding: '4px', maxheight: '65px'}}/>
-              )}
-            </Menu>
-          </Grid.Column>
-          <Grid.Column width={11}>
-            <Switch>
-              {inboxMessageIds.map(
-                id =>
-                  <Route
-                    key={id}
-                    path={`${match.path}/${id}`}
-                    render={
-                      props =>
-                        <MessageDetail message={messages[id]} />
-                    } />
-              )}
-              <Redirect exact={true} from={`${match.path}`} to={`${match.url}/${inboxMessageIds[0]}`}/>
-            </Switch>
-          </Grid.Column>
-        </Grid.Row>
+        {inboxMessageIds.length === 0
+          ? <Segment basic={true}><Header as='h5' disabled={true} textAlign='center'>No Messaeg</Header></Segment>
+          : <Grid.Row>
+            <Grid.Column width={5}>
+              <Menu secondary={true} vertical={true}>
+                {inboxMessageIds.map(
+                  id =>
+                    <Menu.Item
+                      key={id}
+                      as={NavLink}
+                      to={`${match.url}/${id}`}
+                      content={<SenderAbstract message={messages[id]} key={id}/>}
+                      style={{padding: '4px', maxheight: '65px'}}/>
+                )}
+              </Menu>
+            </Grid.Column>
+            <Grid.Column width={11}>
+              <Switch>
+                {inboxMessageIds.map(
+                  id =>
+                    <Route
+                      key={id}
+                      path={`${match.path}/${id}`}
+                      render={
+                        props =>
+                          <MessageDetail message={messages[id]} />
+                      } />
+                )}
+                <Redirect exact={true} from={`${match.path}`} to={`${match.url}/${inboxMessageIds[0]}`}/>
+              </Switch>
+            </Grid.Column>
+          </Grid.Row>}
       </Grid>
   )
 }

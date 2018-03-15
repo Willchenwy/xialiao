@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { DuckContainer, ComposeContainer } from 'containers'
+import { DuckContainer, ComposeContainer, FriendsListContainer } from 'containers'
 import { Container, Grid, Loader, Message, Segment, Dimmer, Image, Header } from 'semantic-ui-react'
-import ListExampleAnimated from './FriendsList'
 
 function NewDucksAvailable ({handleClick}) {
   return (
@@ -24,13 +23,20 @@ export default function Feed (props) {
           <Image src={require('../../assets/images/wireframe/paragraph.png')} />
         </Segment>
         : <Grid>
-          <ComposeContainer
-            handleFormSubmit={handleduckFanout}
-            placeholder='Compose new Duck...'
-            style={{marginTop: '40px'}}>
-            <Header as='h2'>What's happening?</Header>
-          </ComposeContainer>
           <Grid.Row>
+            <Grid.Column width={12} floated='right'>
+              <ComposeContainer
+                handleFormSubmit={handleduckFanout}
+                placeholder='Compose new Duck...'
+                style={{marginTop: '40px'}}>
+                <Header as='h2'>What's happening?</Header>
+              </ComposeContainer>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column width={4} textAlign='left'>
+              <FriendsListContainer />
+            </Grid.Column>
             <Grid.Column width={12}>
               {newDucksAvailable && <NewDucksAvailable handleClick={resetNewDucksAvailable} />}
               {duckIds.length === 0 && <p>This is unfortunate. <br /> It appears there are no ducks yet.</p>}
@@ -38,9 +44,6 @@ export default function Feed (props) {
                 id => (
                   <DuckContainer duckId={id} key={id} />
                 ))}
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <ListExampleAnimated />
             </Grid.Column>
           </Grid.Row>
         </Grid>}

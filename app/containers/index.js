@@ -1,4 +1,5 @@
 export FeedContainer from './Feed/FeedContainer'
+export FriendsListContainer from './Feed/FriendsListContainer'
 export ModalContainer from './Modal/ModalContainer'
 export DuckContainer from './Duck/DuckContainer'
 export UserContainer from './User/UserContainer'

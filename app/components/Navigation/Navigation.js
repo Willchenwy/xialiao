@@ -13,7 +13,7 @@ const UnreadMessageList = ({messageIds, messages, isFetching, onRead}) => (
       <Image src={require('../../assets/images/wireframe/paragraph.png')} />
     </Segment>
     : messageIds.length === 0
-      ? <Segment basic={true}><Header as='h5' disabled={true} textAlign='center'>No new Messaeg</Header></Segment>
+      ? <Segment basic={true}><Header as='h5' disabled={true} textAlign='center'>No Unread Messaeg</Header></Segment>
       : <Dropdown.Menu scrolling={true}>
         {messageIds.map(id =>
           <Dropdown.Item key={id}>

@@ -10,7 +10,7 @@ import { formatMessage } from '../../helpers/utils'
 
 class NewMessageContainer extends Component {
   handleFormSubmit = (formData) => {
-    this.props.sendMessage(formatMessage(formData, this.props.authedUser, this.props.senderName, this.props.userIds))
+    this.props.sendMessage(formatMessage(formData, this.props.authedUser, this.props.userIds))
     this.props.closeModal()
   }
   onSearchQueryChane = (searchQuery) => {
@@ -33,8 +33,7 @@ class NewMessageContainer extends Component {
 }
 
 NewMessageContainer.propTypes = {
-  authedUser: PropTypes.string.isRequired,
-  senderName: PropTypes.string.isRequired,
+  authedUser: PropTypes.object.isRequired,
   userIds: PropTypes.array.isRequired,
   userList: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -48,8 +47,7 @@ NewMessageContainer.propTypes = {
 
 function mapStateToProps ({authentication, newMessage}) {
   return {
-    authedUser: authentication.user.uid,
-    senderName: authentication.user.name,
+    authedUser: authentication.user,
     userIds: newMessage.userIds,
     userList: newMessage.userList,
     isFetching: newMessage.isFetching,

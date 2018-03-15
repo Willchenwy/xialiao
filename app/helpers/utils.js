@@ -20,11 +20,12 @@ export function formatDuck (text, {avatar, name, uid}) {
   }
 }
 
-export function formatMessage ({text, subject}, senderId, senderName, userIds) {
+export function formatMessage ({text, subject, receiver}, {name, uid}, userIds) {
   return {
-    senderId,
-    senderName,
+    senderId: uid,
+    senderName: name,
     receiverId: userIds[0],
+    receiverName: receiver,
     text,
     subject,
     timestamp: Date.now(),
