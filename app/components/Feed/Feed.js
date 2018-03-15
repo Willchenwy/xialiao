@@ -29,7 +29,7 @@ export default function Feed (props) {
                 handleFormSubmit={handleduckFanout}
                 placeholder='Compose new Duck...'
                 style={{marginTop: '40px'}}>
-                <Header as='h2'>What's happening?</Header>
+                <Header as='h2'>{`What's happening?`}</Header>
               </ComposeContainer>
             </Grid.Column>
           </Grid.Row>
