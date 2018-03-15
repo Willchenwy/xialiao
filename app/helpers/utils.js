@@ -1,4 +1,3 @@
-import React from 'react'
 import { usersDucksExpirationLength, userExpirationLength,
   repliesExpirationLength } from 'config/constants'
 
