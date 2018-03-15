@@ -4,6 +4,7 @@ import { addMultipleMessages } from './messages'
 const FETCHING_INBOX = 'FETCHING_INBOX'
 const FETCHING_INBOX_FAILURE = 'FETCHING_INBOX_FAILURE'
 const FETCHING_INBOX_SUCCESS = 'FETCHING_INBOX_SUCCESS'
+const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 
 function fetchingInbox () {
   return {
@@ -26,9 +27,16 @@ function fetchingInboxSuccess (messageIds) {
   }
 }
 
+export function addNewMessage (messageId) {
+  return {
+    type: ADD_NEW_MESSAGE,
+    messageId,
+  }
+}
+
 export function fetchAndHandleInbox () {
   return function (dispatch, getState) {
-    const uid = getState().users.authedId
+    const uid = getState().authentication.user.uid
     dispatch(fetchingInbox())
     fetchUserInbox(uid)
       .then((messages) => dispatch(addMultipleMessages(messages)))
@@ -47,7 +55,7 @@ const initialState = {
   messageIds: [],
 }
 
-export function inbox (state = initialState, action) {
+export default function inbox (state = initialState, action) {
   switch (action.type) {
     case FETCHING_INBOX:
       return {
@@ -65,6 +73,14 @@ export function inbox (state = initialState, action) {
         ...state,
         isFetching: false,
         messageIds: action.messageIds,
+      }
+    case ADD_NEW_MESSAGE:
+      return {
+        ...state,
+        messageIds: [
+          action.messageId,
+          ...state.messageIds,
+        ],
       }
     default:
       return state

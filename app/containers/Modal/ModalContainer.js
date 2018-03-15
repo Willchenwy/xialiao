@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { NewMessageContainer } from '../../containers'
-import { Button, Icon, Modal } from 'semantic-ui-react'
+import { Icon, Modal, Dropdown } from 'semantic-ui-react'
 import * as modalActionCreators from 'redux/modules/modal'
 
 const modalStyles = {
@@ -26,7 +26,7 @@ class ModalContainer extends Component {
     const {openModal, closeModal, isOpen} = this.props
     return (
       <Modal
-        trigger={<Button onClick={openModal}>Show Modal</Button>}
+        trigger={<Dropdown.Item onClick={openModal}><Icon name='compose'/>New Message</Dropdown.Item>}
         open={isOpen}
         onClose={closeModal}
         style={modalStyles}>

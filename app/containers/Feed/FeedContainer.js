@@ -5,11 +5,13 @@ import { bindActionCreators } from 'redux'
 import { Feed } from 'components'
 import * as feedActionCreators from 'redux/modules/feed'
 import { duckFanout } from 'redux/modules/ducks'
+import { setUsersLikes } from 'redux/modules/usersLikes'
 import { formatDuck } from 'helpers/utils'
 
 class FeedContainer extends Component {
   componentDidMount () {
     this.props.setAndHandleFeedListener()
+    this.props.setUsersLikes()
   }
 
   handleduckFanout = ({text}) => {
@@ -35,6 +37,7 @@ FeedContainer.propTypes = {
   duckIds: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   duckFanout: PropTypes.func.isRequired,
+  setUsersLikes: PropTypes.func.isRequired,
   newDucksAvailable: PropTypes.bool.isRequired,
   resetNewDucksAvailable: PropTypes.func.isRequired,
   setAndHandleFeedListener: PropTypes.func.isRequired,
@@ -51,7 +54,7 @@ function mapStateToProps ({ feed, authentication }) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({...feedActionCreators, duckFanout}, dispatch)
+  return bindActionCreators({...feedActionCreators, duckFanout, setUsersLikes}, dispatch)
 }
 
 export default connect(

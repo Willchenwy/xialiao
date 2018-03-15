@@ -4,6 +4,7 @@ import { addMultipleMessages } from './messages'
 const FETCHING_SENT = 'FETCHING_SENT'
 const FETCHING_SENT_FAILURE = 'FETCHING_SENT_FAILURE'
 const FETCHING_SENT_SUCCESS = 'FETCHING_SENT_SUCCESS'
+const ADD_MESSAGEID_TO_SENT = 'ADD_MESSAGEID_TO_SENT'
 
 function fetchingSent () {
   return {
@@ -26,9 +27,16 @@ function fetchingSentSuccess (messageIds) {
   }
 }
 
+export function addMessageIdToSent (messageId) {
+  return {
+    type: ADD_MESSAGEID_TO_SENT,
+    messageId,
+  }
+}
+
 export function fetchAndHandleSent () {
   return function (dispatch, getState) {
-    const uid = getState().users.authedId
+    const uid = getState().authentication.user.uid
     dispatch(fetchingSent())
     fetchUserSent(uid)
       .then((messages) => dispatch(addMultipleMessages(messages)))
@@ -47,7 +55,7 @@ const initialState = {
   messageIds: [],
 }
 
-export default function messages (state = initialState, action) {
+export default function sent (state = initialState, action) {
   switch (action.type) {
     case FETCHING_SENT:
       return {
@@ -65,6 +73,14 @@ export default function messages (state = initialState, action) {
         ...state,
         isFetching: false,
         messageIds: action.messageIds,
+      }
+    case ADD_MESSAGEID_TO_SENT:
+      return {
+        ...state,
+        messageIds: [
+          action.messageId,
+          ...state.messageIds,
+        ],
       }
     default:
       return state

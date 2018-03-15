@@ -9,6 +9,10 @@ import likeCountReducer from './likeCount'
 import newMessageReducer from './newMessage'
 import repliesReducer from './replies'
 import authenticationReducer from './authentication'
+import messagesReducer from './messages'
+import unreadReducer from './unread'
+import inboxReducer from './inbox'
+import sentReducer from './sent'
 import { reducer as formReducer } from 'redux-form'
 import { routerReducer } from 'react-router-redux'
 import { persistCombineReducers } from 'redux-persist'
@@ -33,6 +37,10 @@ const rootReducer = persistCombineReducers(persistConfig, {
   replies: repliesReducer,
   newMessage: newMessageReducer,
   form: formReducer,
+  messages: messagesReducer,
+  unread: unreadReducer,
+  inbox: inboxReducer,
+  sent: sentReducer,
   authentication: authenticationReducer,
 })
 

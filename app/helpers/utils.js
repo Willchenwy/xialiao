@@ -1,3 +1,4 @@
+import React from 'react'
 import { usersDucksExpirationLength, userExpirationLength,
   repliesExpirationLength } from 'config/constants'
 
@@ -19,9 +20,10 @@ export function formatDuck (text, {avatar, name, uid}) {
   }
 }
 
-export function formatMessage ({text, subject}, senderId, userIds) {
+export function formatMessage ({text, subject}, senderId, senderName, userIds) {
   return {
     senderId,
+    senderName,
     receiverId: userIds[0],
     text,
     subject,
@@ -49,12 +51,27 @@ export function formatUserList (response, searchQuery) {
     }, {userList: [], userIds: []})
 }
 
-export function formatRemove (messages, uid) {
-  return Object.keys(messages)
-    .reduce((obj, messageId) => {
+export function formatUnread (messages, sortedIds) {
+  return sortedIds.reduce((unread, id) => {
+    return [
+      ...unread,
+      {
+        timestamp: messages[id].timestamp,
+        image: {avatar: true, src: require('../assets/images/avatar/small/christian.jpg')},
+        text: `${messages[id].senderName} send you a message`,
+      },
+    ]
+  }, [])
+}
+
+export function formatRemove (messageIds, uid) {
+  return Object.keys(messageIds)
+    .reduce((obj, key) => {
+      const path = `${uid}/${key}`
+      console.log({'path': path})
       return {
         ...obj,
-        'uid/messageId': null,
+        [path]: null,
       }
     }, {})
 }

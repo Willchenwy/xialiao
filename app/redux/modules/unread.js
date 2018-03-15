@@ -1,7 +1,8 @@
 import { addListener } from 'redux/modules/listeners'
 import { listenToUsersUnread, deleteFromUsersUnread } from '../../helpers/api'
 import { addMultipleMessages } from './messages'
-import { formatRemove } from '../../helpers/utils'
+import { formatRemove, formatUnread } from '../../helpers/utils'
+import { addNewMessage } from './inbox'
 
 const SETTING_UNREAD_LISTENER = 'SETTING_UNREAD_LISTENER'
 const SETTING_UNREAD_LISTENER_FAILURE = 'SETTING_UNREAD_LISTENER_FAILURE'
@@ -9,6 +10,7 @@ const SETTING_UNREAD_LISTENER_SUCCESS = 'SETTING_UNREAD_LISTENER_SUCCESS'
 const UPDATE_UNREAD = 'UPDATE_UNREAD'
 const ADD_TO_LOCAL_READ = 'ADD_TO_LOCAL_READ'
 const RESET_LOCAL_READ = 'RESET_LOCAL_READ'
+const UPDATE_NAVBAR_NOTIFICATION = 'UPDATE_NAVBAR_NOTIFICATION'
 
 function settingUnreadListener () {
   return {
@@ -37,16 +39,23 @@ function updateUnread (messageIds) {
   }
 }
 
-function addToLocalRead (messageId) {
+function addToLocalRead (message) {
   return {
     type: ADD_TO_LOCAL_READ,
-    messageId,
+    message,
   }
 }
 
 function resetLocalRead () {
   return {
     type: RESET_LOCAL_READ,
+  }
+}
+
+function updateNavBarNotification (notification) {
+  return {
+    type: UPDATE_NAVBAR_NOTIFICATION,
+    notification,
   }
 }
 
@@ -59,15 +68,20 @@ export function setAndHandleUnreadListener () {
     dispatch(addListener('unread'))
     dispatch(settingUnreadListener())
 
-    const uid = getState().users.authedId
+    const uid = getState().authentication.user.uid
     listenToUsersUnread(uid, ({messages, sortedIds}, initialFetch) => {
       dispatch(addMultipleMessages(messages))
 
       const localRead = getState().unread.localRead
-      dispatch(
-        updateUnread(
-          sortedIds.filter(id => !localRead.hasOwnProperty(id))
-        ))
+      const inbox = getState().inbox.messageIds
+      const unreadIds = sortedIds.filter(id => !localRead.hasOwnProperty(id))
+
+      dispatch(updateUnread(unreadIds))
+      dispatch(updateNavBarNotification(formatUnread(messages, unreadIds)))
+
+      if (unreadIds.length > 0 && inbox.includes(unreadIds[0]) === false) {
+        dispatch(addNewMessage(unreadIds[0]))
+      }
 
       if (initialFetch) {
         dispatch(settingUnreadListenerSuccess())
@@ -80,7 +94,12 @@ export function setAndHandleUnreadListener () {
 
 export function handleMessageRead (message, uid) {
   return function (dispatch) {
-    deleteFromUsersUnread(formatRemove(message, uid))
+    const messageId = {[`${message.messageId}`]: true}
+    deleteFromUsersUnread(formatRemove(messageId, uid))
+      .then((data) => {
+        console.log(data)
+        return data
+      })
       .catch((error) => {
         dispatch(addToLocalRead(message))
         console.warn('Error in remove unread: ', error)
@@ -93,9 +112,10 @@ const initialState = {
   error: '',
   messageIds: [],
   localRead: {},
+  notification: [],
 }
 
-export function inbox (state = initialState, action) {
+export default function unread (state = initialState, action) {
   switch (action.type) {
     case SETTING_UNREAD_LISTENER:
       return {
@@ -124,13 +144,18 @@ export function inbox (state = initialState, action) {
         ...state,
         localRead: {
           ...state.localRead,
-          ...action.message,
+          [action.message.messageId]: true,
         },
       }
     case RESET_LOCAL_READ:
       return {
         ...state,
         localRead: {},
+      }
+    case UPDATE_NAVBAR_NOTIFICATION:
+      return {
+        ...state,
+        notification: action.notification,
       }
     default:
       return state

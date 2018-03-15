@@ -3,15 +3,15 @@ import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
-import { NewMessage } from '../../components'
-import { fetchAndHandleUserList, invalidSearchQuery } from '../../redux/modules/newMessage'
-import { sendMessage } from '../../redux/modules/messages'
+import { NewMessage } from 'components'
+import { fetchAndHandleUserList, invalidSearchQuery, sendMessage } from 'redux/modules/newMessage'
+import { closeModal } from 'redux/modules/modal'
 import { formatMessage } from '../../helpers/utils'
 
-export class NewMessageContainer extends Component {
+class NewMessageContainer extends Component {
   handleFormSubmit = (formData) => {
-    console.log({'formData: ': formData})
-    this.props.sendMessage(formatMessage(formData, this.props.authedUser, this.props.userIds))
+    this.props.sendMessage(formatMessage(formData, this.props.authedUser, this.props.senderName, this.props.userIds))
+    this.props.closeModal()
   }
   onSearchQueryChane = (searchQuery) => {
     searchQuery = searchQuery.replace(/^[ ]+|[ ]+$/g, '')
@@ -34,6 +34,7 @@ export class NewMessageContainer extends Component {
 
 NewMessageContainer.propTypes = {
   authedUser: PropTypes.string.isRequired,
+  senderName: PropTypes.string.isRequired,
   userIds: PropTypes.array.isRequired,
   userList: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -42,11 +43,13 @@ NewMessageContainer.propTypes = {
   invalidSearchQuery: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
 }
 
 function mapStateToProps ({authentication, newMessage}) {
   return {
     authedUser: authentication.user.uid,
+    senderName: authentication.user.name,
     userIds: newMessage.userIds,
     userList: newMessage.userList,
     isFetching: newMessage.isFetching,
@@ -54,14 +57,14 @@ function mapStateToProps ({authentication, newMessage}) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({fetchAndHandleUserList, invalidSearchQuery, sendMessage}, dispatch)
+  return bindActionCreators({fetchAndHandleUserList, invalidSearchQuery, sendMessage, closeModal}, dispatch)
 }
 
-const ReduxForm = reduxForm({
-  form: 'newMessage',
-})(NewMessageContainer)
-
-export default connect(
+const newMessageContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ReduxForm)
+)(NewMessageContainer)
+
+export default reduxForm({
+  form: 'newMessage',
+})(newMessageContainer)

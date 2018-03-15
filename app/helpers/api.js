@@ -47,8 +47,8 @@ function saveToUsersSent (messageId, message) {
 }
 
 function saveToUsersUnread (messageId, message) {
-  return ref.child(`uersUnread/${message.receiverId}/${messageId}`)
-    .set(message.timestamp)
+  return ref.child(`usersUnread/${message.receiverId}/${messageId}`)
+    .set({...message, messageId})
 }
 
 export function saveMessage (message) {
@@ -77,10 +77,10 @@ export function listenToFeed (cb, errorCb) {
 
 export function listenToUsersUnread (uid, cb, errorCb) {
   let timesCalled = 0
-  ref.child(`uersUnread/${uid}`).on('value', (snapshot) => {
-    const unread = snapshot.val() || {}
-    const sortedIds = Object.keys(unread).sort((a, b) => {
-      return unread[b].timestamp - unread[a].timestamp
+  ref.child(`usersUnread/${uid}`).on('value', (snapshot) => {
+    const messages = snapshot.val() || {}
+    const sortedIds = Object.keys(messages).sort((a, b) => {
+      return messages[b].timestamp - messages[a].timestamp
     })
 
     let initialFetch = timesCalled++ <= 0

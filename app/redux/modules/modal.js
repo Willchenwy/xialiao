@@ -1,6 +1,5 @@
 const OPEN_MODAL = 'OPEN_MODAL'
 const CLOSE_MODAL = 'CLOSE_MODAL'
-const UPDATE_DUCK_TEXT = 'UPDATE_DUCK_TEXT'
 
 export function openModal () {
   return {
@@ -11,13 +10,6 @@ export function openModal () {
 export function closeModal () {
   return {
     type: CLOSE_MODAL,
-  }
-}
-
-export function updateDuckText (newDuckText) {
-  return {
-    type: UPDATE_DUCK_TEXT,
-    newDuckText,
   }
 }
 
@@ -38,11 +30,6 @@ export default function modal (state = initialState, action) {
         ...state,
         duckText: '',
         isOpen: false,
-      }
-    case UPDATE_DUCK_TEXT:
-      return {
-        ...state,
-        duckText: action.newDuckText,
       }
     default:
       return state

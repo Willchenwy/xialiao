@@ -1,6 +1,7 @@
 import { fetchUserList, saveMessage } from '../../helpers/api'
 import { formatUserList } from '../../helpers/utils'
 import { addMessage } from './messages'
+import { addMessageIdToSent } from './sent'
 
 const FETCHING_USER_LIST = 'FETCHING_USER_LIST'
 const FETCHING_USER_LIST_SUCCESS = 'FETCHING_USER_LIST_SUCCESS'
@@ -58,7 +59,10 @@ export function fetchAndHandleUserList (searchQuery) {
 export function sendMessage (message) {
   return function (dispatch) {
     saveMessage(message)
-      .then((messageWithId) => dispatch(addMessage(messageWithId)))
+      .then((messageWithId) => {
+        dispatch(addMessage(messageWithId))
+        dispatch(addMessageIdToSent(messageWithId.messageId))
+      })
       .catch((error) => console.warn('Error in sending message: ', error))
   }
 }
