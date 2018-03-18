@@ -12,6 +12,8 @@ class UserContainer extends Component {
     const uid = this.props.match.params.uid
     if (this.props.noUser === true || staleUser(this.props.lastUpdatedUser)) {
       this.props.fetchAndHandleUser(uid)
+    } else {
+      this.props.removeUserFetching()
     }
 
     if (this.props.noUser === true || staleDucks(this.props.lastUpdatedDucks)) {
@@ -46,6 +48,7 @@ UserContainer.propTypes = {
   lastUpdatedDucks: PropTypes.number.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
+  removeUserFetching: PropTypes.func.isRequired,
 }
 
 function mapStateToProps ({ users, usersDucks }, props) {
@@ -53,7 +56,6 @@ function mapStateToProps ({ users, usersDucks }, props) {
   const user = users[uid]
   const noUser = typeof user === 'undefined'
   const specificUsersDucks = usersDucks[uid]
-
   return {
     noUser,
     isFetching: users.isFetching || usersDucks.isFetching,

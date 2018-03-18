@@ -15,6 +15,7 @@ class FriendsListContainer extends Component {
       <FriendsList
         uids={this.props.uids}
         users={this.props.users}
+        authedUser={this.props.authedUser}
         isSettingLintener={this.props.isSettingLintener} />
     )
   }
@@ -24,12 +25,14 @@ FriendsListContainer.propTypes = {
   isSettingLintener: PropTypes.bool.isRequired,
   uids: PropTypes.array.isRequired,
   users: PropTypes.object.isRequired,
+  authedUser: PropTypes.object.isRequired,
   setAndHandleUsersListener: PropTypes.func.isRequired,
 }
 
-function mapStateToProps ({ users }) {
+function mapStateToProps ({ users, authentication }) {
   return {
     isSettingLintener: users.isSettingLintener,
+    authedUser: authentication.user,
     uids: users.uids,
     users: users,
   }

@@ -16,15 +16,15 @@ class NavigationContainer extends Component {
     this.props.logout()
   }
 
-  onRead = (message, uid) => {
-    this.props.handleMessageRead(message, uid)
+  onRead = (message) => {
+    this.props.handleMessageRead(message)
   }
 
   render () {
     return (
       <Navigation
         loggedIn={this.props.loggedIn}
-        user={this.props.user}
+        authedUser={this.props.authedUser}
         location={this.props.location}
         hendleLogout={this.hendleLogout}
         unreadDropdown={this.props.unreadDropdown}
@@ -37,7 +37,7 @@ class NavigationContainer extends Component {
 }
 
 NavigationContainer.propTypes = {
-  user: PropTypes.object.isRequired,
+  authedUser: PropTypes.object.isRequired,
   logout: PropTypes.func.isRequired,
   loggedIn: PropTypes.bool.isRequired,
   location: PropTypes.object.isRequired,
@@ -52,7 +52,7 @@ NavigationContainer.propTypes = {
 function mapStateToProps ({authentication, router, unread, messages}) {
   return {
     loggedIn: authentication.loggedIn,
-    user: authentication.user,
+    authedUser: authentication.user,
     location: router.location,
     unreadDropdown: unread.notification,
     messageIds: unread.messageIds,

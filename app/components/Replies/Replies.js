@@ -3,11 +3,12 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { formatTimestamp } from 'helpers/utils'
 import { Comment, Grid, Segment, Loader, Image, Dimmer } from 'semantic-ui-react'
+import { shortParagraph, avatars } from 'helpers/images'
 
 function Reply ({ comment }) {
   return (
     <Comment>
-      <Comment.Avatar src={comment.avatar} />
+      <Comment.Avatar src={avatars[comment.avatar]} />
       <Comment.Content>
         <Comment.Author as={Link} to={`${comment.uid}`}>{comment.name}</Comment.Author>
         <Comment.Metadata>
@@ -37,7 +38,7 @@ export default function Replies ({ isFetching, error, replies }) {
           <Dimmer active={true} inverted={true}>
             <Loader size='small'>Loading</Loader>
           </Dimmer>
-          <Image src={require('../../assets/images/wireframe/short-paragraph.png')} />
+          <Image src={shortParagraph} />
         </Segment>
         : <Grid.Column width={16}>
           <Comment.Group>

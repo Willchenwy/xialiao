@@ -1,41 +1,12 @@
-import { fetchUserList, saveMessage } from '../../helpers/api'
-import { formatUserList } from '../../helpers/utils'
 import { addMessage } from './messages'
 import { addMessageIdToSent } from './sent'
+import { formatDropdownOptions } from '../../helpers/utils'
+import { fetchUsersByPrefix, saveMessage } from '../../helpers/api'
 
-const FETCHING_USER_LIST = 'FETCHING_USER_LIST'
-const FETCHING_USER_LIST_SUCCESS = 'FETCHING_USER_LIST_SUCCESS'
-const FETCHING_USER_LIST_FAILURE = 'FETCHING_USER_LIST_FAILURE'
 const INVALID_SEARCH_QUERY = 'INVALID_SEARCH_QUERY'
-const UPDATE_UID = 'UPDATE_UID'
-
-function fetchingUserList () {
-  return {
-    type: FETCHING_USER_LIST,
-  }
-}
-
-function fetchingUserListSuccess (userList) {
-  return {
-    type: FETCHING_USER_LIST_SUCCESS,
-    userList,
-  }
-}
-
-function fetchingUserListFailure (error) {
-  console.warn(error)
-  return {
-    type: FETCHING_USER_LIST_FAILURE,
-    error: 'error fetching user list',
-  }
-}
-
-function updateUids (userIds) {
-  return {
-    type: UPDATE_UID,
-    userIds,
-  }
-}
+const FETCHING_DROPDOWN_OPTIONS = 'FETCHING_DROPDOWN_OPTIONS'
+const FETCHING_DROPDOWN_OPTIONS_SUCCESS = 'FETCHING_DROPDOWN_OPTIONS_SUCCESS'
+const FETCHING_DROPDOWN_OPTIONS_FAILURE = 'FETCHING_DROPDOWN_OPTIONS_FAILURE'
 
 export function invalidSearchQuery () {
   return {
@@ -43,66 +14,78 @@ export function invalidSearchQuery () {
   }
 }
 
-export function fetchAndHandleUserList (searchQuery) {
-  return function (dispatch) {
-    dispatch(fetchingUserList())
-    fetchUserList(searchQuery)
-      .then((response) => formatUserList(response, searchQuery))
-      .then(({userList, userIds}) => {
-        dispatch(fetchingUserListSuccess(userList))
-        dispatch(updateUids(userIds))
-      })
-      .catch((error) => dispatch(fetchingUserListFailure(error)))
+export function fetchDropdownOptions (searchQuery) {
+  return dispatch => {
+    dispatch(fetching())
+
+    fetchUsersByPrefix(searchQuery)
+      .then(
+        response =>
+          formatDropdownOptions(response, searchQuery)
+      )
+      .then(
+        formattResponse =>
+          dispatch(success(formattResponse))
+      )
+      .catch(
+        error =>
+          dispatch(failure(error))
+      )
   }
+
+  function fetching () { return { type: FETCHING_DROPDOWN_OPTIONS } }
+  function success (formattResponse) { return { type: FETCHING_DROPDOWN_OPTIONS_SUCCESS, formattResponse } }
+  function failure (error) { return { type: FETCHING_DROPDOWN_OPTIONS_FAILURE, error: `error fetching user list: ${error}` } }
 }
 
 export function sendMessage (message) {
-  return function (dispatch) {
+  return dispatch => {
     saveMessage(message)
-      .then((messageWithId) => {
-        dispatch(addMessage(messageWithId))
-        dispatch(addMessageIdToSent(messageWithId.messageId))
-      })
-      .catch((error) => console.warn('Error in sending message: ', error))
+      .then(
+        messageWithId => {
+          dispatch(addMessage(messageWithId))
+          dispatch(addMessageIdToSent(messageWithId.messageId))
+        }
+      )
+      .catch(
+        error =>
+          console.warn('Error in sending message: ', error)
+      )
   }
 }
 
 const initialState = {
   isFetching: false,
   error: '',
-  userList: [],
-  userIds: [],
+  dropdownOptions: [],
+  receiversInfo: [],
 }
 
 export default function newMessage (state = initialState, action) {
   switch (action.type) {
-    case FETCHING_USER_LIST:
+    case FETCHING_DROPDOWN_OPTIONS:
       return {
         ...state,
         isFetching: true,
       }
-    case FETCHING_USER_LIST_FAILURE:
+    case FETCHING_DROPDOWN_OPTIONS_FAILURE:
       return {
         ...state,
         isFetching: false,
         error: action.error,
       }
-    case FETCHING_USER_LIST_SUCCESS:
+    case FETCHING_DROPDOWN_OPTIONS_SUCCESS:
       return {
         ...state,
         isFetching: false,
         error: '',
-        userList: action.userList,
+        dropdownOptions: action.formattResponse.dropdownOptions,
+        receiversInfo: action.formattResponse.receiversInfo,
       }
     case INVALID_SEARCH_QUERY:
       return {
         ...state,
         userList: [],
-      }
-    case UPDATE_UID:
-      return {
-        ...state,
-        userIds: action.userIds,
       }
     default:
       return state

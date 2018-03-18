@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserFollow = () => (
   <div>
-      UserFollow
+      No follow
   </div>
 )
 export default UserFollow

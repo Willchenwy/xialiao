@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DuckContainer, ComposeContainer, FriendsListContainer } from 'containers'
 import { Container, Grid, Loader, Message, Segment, Dimmer, Image, Header } from 'semantic-ui-react'
+import {paragraph} from 'helpers/images'
 
 function NewDucksAvailable ({handleClick}) {
   return (
@@ -20,7 +21,7 @@ export default function Feed (props) {
           <Dimmer active={true} inverted={true}>
             <Loader size='large'>Loading</Loader>
           </Dimmer>
-          <Image src={require('../../assets/images/wireframe/paragraph.png')} />
+          <Image src={paragraph} />
         </Segment>
         : <Grid>
           <Grid.Row>

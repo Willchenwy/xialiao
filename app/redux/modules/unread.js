@@ -92,14 +92,10 @@ export function setAndHandleUnreadListener () {
   }
 }
 
-export function handleMessageRead (message, uid) {
+export function handleMessageRead (message) {
   return function (dispatch) {
     const messageId = {[`${message.messageId}`]: true}
-    deleteFromUsersUnread(formatRemove(messageId, uid))
-      .then((data) => {
-        console.log(data)
-        return data
-      })
+    deleteFromUsersUnread(formatRemove(messageId, message.receiverId))
       .catch((error) => {
         dispatch(addToLocalRead(message))
         console.warn('Error in remove unread: ', error)

@@ -7,8 +7,8 @@ const FETCHING_USER_SUCCESS = 'FETCHING_USER_SUCCESS'
 const SETTING_USERS_LISTENER = 'SETTING_USERS_LISTENER'
 const SETTING_USERS_LISTENER_FAILURE = 'SETTING_USERS_LISTENER_FAILURE'
 const SETTING_USERS_LISTENER_SUCCESS = 'SETTING_USERS_LISTENER_SUCCESS'
-const ADD_NEW_USER_TO_USERS = 'ADD_NEW_USER_TO_USERS'
 const ADD_MULTIPLE_USERS = 'ADD_MULTIPLE_USERS'
+const REMOVE_USER_FETCHING = 'REMOVE_USER_FETCHING'
 
 function fetchingUser () {
   return {
@@ -54,17 +54,16 @@ function settingUsersListenerSuccess (uids) {
   }
 }
 
-function addNewUserToUsers (uid) {
-  return {
-    type: ADD_NEW_USER_TO_USERS,
-    uid,
-  }
-}
-
 function addMultipleUsers (users) {
   return {
     type: ADD_MULTIPLE_USERS,
     users,
+  }
+}
+
+export function removeUserFetching () {
+  return {
+    type: REMOVE_USER_FETCHING,
   }
 }
 
@@ -98,9 +97,7 @@ export function setAndHandleUsersListener () {
           }
         }, {})
       ))
-      initialFetch === true
-        ? dispatch(settingUsersListenerSuccess(uids))
-        : dispatch(addNewUserToUsers(uids[0]))
+      dispatch(settingUsersListenerSuccess(uids))
     }, (error) => dispatch(settingUsersListenerFailure(error)))
   }
 }
@@ -177,18 +174,15 @@ export default function users (state = initialState, action) {
         uids: action.uids,
         isSettingLintener: false,
       }
-    case ADD_NEW_USER_TO_USERS:
-      return {
-        ...state,
-        uids: [
-          action.uid,
-          ...state.uids,
-        ],
-      }
     case ADD_MULTIPLE_USERS:
       return {
         ...state,
         ...action.users,
+      }
+    case REMOVE_USER_FETCHING:
+      return {
+        ...state,
+        isFetching: false,
       }
     default:
       return state

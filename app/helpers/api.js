@@ -116,6 +116,16 @@ export function fetchUserSent (uid) {
     .then((snapshot) => snapshot.val() || {})
 }
 
+export function fetchMessage (messageId, uid, type) {
+  if (type === 'USERSINBOX') {
+    return ref.child(`usersInbox/${uid}/${messageId}`).once('value')
+      .then((snapshot) => snapshot.val() || {})
+  } else {
+    return ref.child(`usersSent/${uid}/${messageId}`).once('value')
+      .then((snapshot) => snapshot.val() || {})
+  }
+}
+
 export function fetchUsersLikes (uid) {
   return ref.child(`usersLikes/${uid}`).once('value')
     .then((snapshot) => snapshot.val() || {})
@@ -175,7 +185,7 @@ export function fetchReplies (duckId) {
     .then((snapshot) => snapshot.val() || {})
 }
 
-export function fetchUserList (searchQuery) {
+export function fetchUsersByPrefix (searchQuery) {
   return ref.child('users')
     .orderByChild('name')
     .startAt(searchQuery)

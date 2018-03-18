@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserFriends = () => (
   <div>
-    UserFriends
+    No friends
   </div>
 )
 

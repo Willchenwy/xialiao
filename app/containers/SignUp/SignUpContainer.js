@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { SignUp } from 'components'
 import { signUp } from '../../redux/modules/authentication'
+import { authValidator } from 'helpers/formValidator'
 
 class SignUpContainer extends Component {
-  handleSignUp = ({email, password, displayName}) => {
-    this.props.dispatch(signUp(email, password, displayName))
+  handleSignUp = ({email, password, displayName}, valid) => {
+    return this.props.signUp(email, password, displayName)
+      .then(response => authValidator(response))
   }
 
   render () {
@@ -20,9 +23,20 @@ class SignUpContainer extends Component {
 
 SignUpContainer.propTypes = {
   signingUp: PropTypes.any,
-  dispatch: PropTypes.func.isRequired,
+  signUp: PropTypes.func.isRequired,
+}
+
+function mapStateToProps ({authentication}) {
+  return {
+    signingUp: authentication.signingUp,
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({signUp}, dispatch)
 }
 
 export default connect(
-  ({authentication}) => ({ signingUp: authentication.signingUp }),
+  mapStateToProps,
+  mapDispatchToProps,
 )(SignUpContainer)

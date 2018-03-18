@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link, Switch, Route, Redirect } from 'react-router-dom'
 import { Grid, Image, Statistic, Menu, Container } from 'semantic-ui-react'
 import { SignUpContainer, LoginContainer } from 'containers'
+import {logoPath} from 'helpers/images'
 
 export default function AuthenticateContainer ({match, location}) {
   return (
@@ -23,7 +24,7 @@ export default function AuthenticateContainer ({match, location}) {
         <Grid.Row columns={2}>
           <Grid.Column textAlign='center'>
             <div>
-              <Image src={require('../../assets/images/crt425.png')} style={{maxWidth: 200}} centered={true}/>
+              <Image src={logoPath} style={{maxWidth: 200}} centered={true}/>
               <Statistic>
                 <Statistic.Value>Xialiao</Statistic.Value>
                 <Statistic.Label>瞎聊 / 瞎看 / 瞎玩</Statistic.Label>

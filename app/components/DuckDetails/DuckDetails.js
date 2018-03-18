@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { DuckContainer, RepliesContainer, ComposeContainer } from 'containers'
 import { Feed, Segment, Grid, Loader, Header, Dimmer, Image } from 'semantic-ui-react'
+import { paragraph, avatars } from 'helpers/images'
 
 export default function DuckDetails (props) {
   const { isFetching, handleFormSubmit, error } = props
@@ -13,12 +14,12 @@ export default function DuckDetails (props) {
           <Dimmer active={true} inverted={true}>
             <Loader size='large'>Loading</Loader>
           </Dimmer>
-          <Image src={require('../../assets/images/wireframe/paragraph.png')} />
+          <Image src={paragraph} />
         </Segment>
         : <Grid.Column width={16}>
           <Feed>
             <Feed.Event>
-              <Feed.Label as={Link} to={`/user/${props.duck.uid}`} image={props.duck.avatar} />
+              <Feed.Label as={Link} to={`/user/${props.duck.uid}`} image={avatars[props.duck.avatar]} />
               <Feed.Content>
                 <Feed.Summary>
                   <Feed.User as={Link} to={`/user/${props.duck.uid}`}>{props.duck.name} </Feed.User>

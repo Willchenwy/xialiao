@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Login } from 'components'
 import { login } from '../../redux/modules/authentication'
+import { authValidator } from 'helpers/formValidator'
 
 class LoginContainer extends Component {
   handleLogin = ({email, password}) => {
-    this.props.dispatch(login(email, password))
+    return this.props.login(email, password)
+      .then(response => authValidator(response))
   }
 
   render () {
@@ -19,10 +22,21 @@ class LoginContainer extends Component {
 }
 
 LoginContainer.propTypes = {
+  login: PropTypes.func.isRequired,
   loggingIn: PropTypes.any,
-  dispatch: PropTypes.func.isRequired,
+}
+
+function mapStateToProps ({authentication}) {
+  return {
+    loggingIn: authentication.loggingIn,
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({login}, dispatch)
 }
 
 export default connect(
-  ({authentication}) => ({ loggingIn: authentication.loggingIn }),
+  mapStateToProps,
+  mapDispatchToProps,
 )(LoginContainer)

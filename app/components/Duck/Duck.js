@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { avatars } from 'helpers/images'
 import { formatTimestamp } from 'helpers/utils'
 import { Segment, Feed, Icon } from 'semantic-ui-react'
 
@@ -10,7 +11,7 @@ export default function Duck (props) {
     <Segment raised={true}>
       <Feed>
         <Feed.Event>
-          {!props.hideReplyBtn && <Feed.Label image={props.duck.avatar} />}
+          {!props.hideReplyBtn && <Feed.Label image={avatars[props.duck.avatar]} />}
           <Feed.Content>
             {!props.hideReplyBtn &&
                 <Feed.Summary>

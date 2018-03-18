@@ -28,7 +28,7 @@ DropdownFormField.propTypes = {
   isFetching: PropTypes.bool.isRequired,
 }
 
-export default function NewMessage ({handleFormSubmit, handleSubmit, onSearchQueryChane, userList, isFetching}) {
+export default function NewMessage ({handleFormSubmit, handleSubmit, onSearchQueryChane, dropdownOptions, isFetching}) {
   return (
     <Form onSubmit={handleSubmit(handleFormSubmit)}>
       <Form.Field>
@@ -37,7 +37,7 @@ export default function NewMessage ({handleFormSubmit, handleSubmit, onSearchQue
           component={DropdownFormField}
           label='Receiver'
           onChange={(event, newValue, previousValue) => onSearchQueryChane(newValue)}
-          stateOptions={userList}
+          stateOptions={dropdownOptions}
           isFetching={isFetching}/>
       </Form.Field>
       <Form.Field>
@@ -59,6 +59,6 @@ NewMessage.propTypes = {
   handleFormSubmit: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   onSearchQueryChane: PropTypes.func.isRequired,
-  userList: PropTypes.array.isRequired,
+  dropdownOptions: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
 }

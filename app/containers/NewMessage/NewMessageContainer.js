@@ -4,20 +4,25 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 import { NewMessage } from 'components'
-import { fetchAndHandleUserList, invalidSearchQuery, sendMessage } from 'redux/modules/newMessage'
+import * as newMessageActions from 'redux/modules/newMessage'
 import { closeModal } from 'redux/modules/modal'
-import { formatMessage } from '../../helpers/utils'
+import { formatNewMessage } from '../../helpers/utils'
 
 class NewMessageContainer extends Component {
   handleFormSubmit = (formData) => {
-    this.props.sendMessage(formatMessage(formData, this.props.authedUser, this.props.userIds))
+    const authedUser = this.props.authedUser
+    const receiversInfo = this.props.receiversInfo[0]
+
+    const formattedMessage = formatNewMessage(formData, authedUser, receiversInfo)
+    this.props.sendMessage(formattedMessage)
     this.props.closeModal()
   }
+
   onSearchQueryChane = (searchQuery) => {
     searchQuery = searchQuery.replace(/^[ ]+|[ ]+$/g, '')
     searchQuery === ''
       ? this.props.invalidSearchQuery()
-      : this.props.fetchAndHandleUserList(searchQuery)
+      : this.props.fetchDropdownOptions(searchQuery)
   }
 
   render () {
@@ -26,7 +31,7 @@ class NewMessageContainer extends Component {
         handleFormSubmit={this.handleFormSubmit}
         handleSubmit={this.props.handleSubmit}
         onSearchQueryChane={this.onSearchQueryChane}
-        userList={this.props.pristine ? [] : this.props.userList}
+        dropdownOptions={this.props.pristine ? [] : this.props.dropdownOptions}
         isFetching={this.props.isFetching}/>
     )
   }
@@ -34,11 +39,11 @@ class NewMessageContainer extends Component {
 
 NewMessageContainer.propTypes = {
   authedUser: PropTypes.object.isRequired,
-  userIds: PropTypes.array.isRequired,
-  userList: PropTypes.array.isRequired,
+  receiversInfo: PropTypes.array.isRequired,
+  dropdownOptions: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
-  fetchAndHandleUserList: PropTypes.func.isRequired,
+  fetchDropdownOptions: PropTypes.func.isRequired,
   invalidSearchQuery: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
@@ -48,14 +53,14 @@ NewMessageContainer.propTypes = {
 function mapStateToProps ({authentication, newMessage}) {
   return {
     authedUser: authentication.user,
-    userIds: newMessage.userIds,
-    userList: newMessage.userList,
+    receiversInfo: newMessage.receiversInfo,
     isFetching: newMessage.isFetching,
+    dropdownOptions: newMessage.dropdownOptions,
   }
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({fetchAndHandleUserList, invalidSearchQuery, sendMessage, closeModal}, dispatch)
+  return bindActionCreators({...newMessageActions, closeModal}, dispatch)
 }
 
 const newMessageContainer = connect(

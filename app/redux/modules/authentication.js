@@ -1,5 +1,5 @@
 import { loginUser, logoutUser, saveUser, signUpUser } from 'helpers/auth'
-import { formatUserInfo } from 'helpers/utils'
+import { formatUserInfo, randomAvatar } from 'helpers/utils'
 import { store } from '../../index'
 import { push } from 'react-router-redux'
 
@@ -16,14 +16,16 @@ export function login (email, password) {
   return dispatch => {
     dispatch(request())
 
-    loginUser(email, password)
+    return loginUser(email, password)
       .then(
         user => {
           const userInfo = formatUserInfo(user)
           dispatch(success(userInfo))
           store.dispatch(push('/feed'))
         },
-        error => dispatch(failure(error))
+        error => (
+          dispatch(failure(error.message))
+        )
       )
   }
 
@@ -36,18 +38,22 @@ export function signUp (email, password, displayName) {
   return dispatch => {
     dispatch(request())
 
-    signUpUser(email, password, displayName)
+    const photoURL = randomAvatar()
+    return signUpUser(email, password, displayName, photoURL)
       .then(
         user => {
+          console.log(user)
           const userInfo = formatUserInfo(user)
           dispatch(success(userInfo))
           store.dispatch(push('/feed'))
           return userInfo
-        },
-        error => dispatch(failure(error))
+        }
       )
       .then(
         userInfo => saveUser(userInfo)
+      )
+      .catch(
+        error => dispatch(failure(error.message))
       )
   }
 

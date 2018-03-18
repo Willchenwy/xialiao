@@ -1,8 +1,14 @@
 import { ref, wilddogAuth } from 'config/constants'
 
-export function signUpUser (email, password, displayName) {
+export function signUpUser (email, password, displayName, photoURL) {
   return wilddogAuth.createUserWithEmailAndPassword(email, password)
-    .then(currentUser => currentUser.updateProfile({'displayName': displayName}))
+    .then(currentUser => currentUser.updateProfile(
+      {
+        'displayName': displayName,
+        'photoURL': photoURL,
+        'email': email,
+      }
+    ))
 }
 
 export function loginUser (email, password) {

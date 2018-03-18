@@ -24,7 +24,7 @@ const persistConfig = {
   whitelist: ['authentication'],
 }
 
-const rootReducer = persistCombineReducers(persistConfig, {
+const appReducer = persistCombineReducers(persistConfig, {
   router: routerReducer,
   users: usersReducer,
   modal: modalReducer,
@@ -43,5 +43,15 @@ const rootReducer = persistCombineReducers(persistConfig, {
   sent: sentReducer,
   authentication: authenticationReducer,
 })
+
+const rootReducer = (state, action) => {
+  if (action.type === 'LOGOUT') {
+    storage.removeItem('persist:root')
+    const { router } = state
+    state = { router }
+  }
+
+  return appReducer(state, action)
+}
 
 export default rootReducer

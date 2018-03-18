@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import { InboxContainer, SentContainer } from 'containers'
 import { fetchAndHandleInbox } from 'redux/modules/inbox'
 import { fetchAndHandleSent } from 'redux/modules/sent'
 import { Mailbox } from 'components'
@@ -13,38 +15,24 @@ class MailboxContainer extends Component {
   }
 
   render () {
+    const {match} = this.props
     return (
-      <Mailbox
-        isFetchingInbox={this.props.isFetchingInbox}
-        isFetchingSent={this.props.isFetchingSent}
-        inboxMessageIds={this.props.inboxMessageIds}
-        sentMessageIds={this.props.sentMessageIds}
-        messages={this.props.messages}
-        match={this.props.match} />
+      <div>
+        <Mailbox match={match}/>
+        <Switch>
+          <Route path={`${match.path}/inbox`} component={InboxContainer} />
+          <Route path={`${match.path}/sent`} component={SentContainer} />
+          <Redirect exact={true} from={`${match.path}`} to={`${match.url}/inbox`}/>
+        </Switch>
+      </div >
     )
   }
 }
 
 MailboxContainer.propTypes = {
-  isFetchingInbox: PropTypes.bool.isRequired,
-  isFetchingSent: PropTypes.bool.isRequired,
-  inboxMessageIds: PropTypes.array.isRequired,
-  sentMessageIds: PropTypes.array.isRequired,
-  messages: PropTypes.object.isRequired,
   fetchAndHandleInbox: PropTypes.func.isRequired,
   fetchAndHandleSent: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-}
-
-function mapStateToProps ({inbox, sent, messages}) {
-  return {
-    isFetchingInbox: inbox.isFetching,
-    isFetchingSent: sent.isFetching,
-    inboxMessageIds: inbox.messageIds,
-    sentMessageIds: sent.messageIds,
-    messages: messages,
-  }
 }
 
 function mapDispatchToProps (dispatch) {
@@ -52,6 +40,6 @@ function mapDispatchToProps (dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 )(MailboxContainer)

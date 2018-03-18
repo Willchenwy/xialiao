@@ -5,8 +5,7 @@ import { Container, Dimmer, Loader, Image as ImageComponent, Segment, Grid, Head
 import UserDuck from './UserDuck'
 import UserFollow from './UserFollow'
 import UserFriends from './UserFriends'
-
-const paragraph = <ImageComponent src={require('../../assets/images/wireframe/short-paragraph.png')} />
+import { paragraph, avatars } from 'helpers/images'
 
 function User ({ noUser, user, isFetching, error, duckIds, match, location }) {
   return (
@@ -18,20 +17,20 @@ function User ({ noUser, user, isFetching, error, duckIds, match, location }) {
               <Dimmer active={true} inverted={true}>
                 <Loader size='large'>Loading</Loader>
               </Dimmer>
-              <ImageComponent src={require('../../assets/images/wireframe/paragraph.png')} />
+              <ImageComponent src={paragraph} />
             </Segment>
             : noUser === true
               ? <Header as='h3'>This user does not exist</Header>
               : <Grid.Column width={16}>
                 <Item.Group>
                   <Item>
-                    <Item.Image src={user.avatar} />
+                    <Item.Image src={avatars[user.avatar]} />
                     <Item.Content>
                       <Item.Header as='a'>{user.name}</Item.Header>
                       <Item.Meta>
                         <span>United State</span>
                       </Item.Meta>
-                      <Item.Description>{paragraph}</Item.Description>
+                      <Item.Description />
                     </Item.Content>
                   </Item>
                 </Item.Group>
@@ -51,8 +50,8 @@ function User ({ noUser, user, isFetching, error, duckIds, match, location }) {
                   <Route
                     path={`${match.path}/duckList`}
                     render={(props) => <UserDuck {...props} duckIds={duckIds} />} />
-                  <Route path={`${match.path}/follow`} component = {UserFollow} />
-                  <Route path={`${match.path}/friends`} component = {UserFriends} />
+                  <Route path={`${match.path}/follow`} component={UserFollow} />
+                  <Route path={`${match.path}/friends`} component={UserFriends} />
                 </Switch>
               </Grid.Column>}
           {error && <Header as='h3'>{error}</Header>}

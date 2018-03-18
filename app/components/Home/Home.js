@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid, Statistic, Image } from 'semantic-ui-react'
+import {logoPath} from 'helpers/images'
 
 export default function Home (props) {
   return (
@@ -15,7 +16,7 @@ export default function Home (props) {
         style={{ height: '85%' }}
         verticalAlign='middle'>
         <Grid.Column textAlign='center'>
-          <Image src={require('../../assets/images/crt425.png')} style={{maxWidth: 200}} centered={true}/>
+          <Image src={logoPath} style={{maxWidth: 200}} centered={true}/>
           <Statistic>
             <Statistic.Value>Xialiao</Statistic.Value>
             <Statistic.Label>瞎聊 / 瞎看 / 瞎玩</Statistic.Label>
