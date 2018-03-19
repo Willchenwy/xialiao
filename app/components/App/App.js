@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import {
   NavigationContainer, MailboxContainer, FeedContainer,
   UserContainer, DuckDetailsContainer } from 'containers'
@@ -17,7 +17,7 @@ export default function App () {
         <PrivateRoute path='/user/:uid' component={UserContainer}/>
         <PrivateRoute path='/duckDetail/:duckId' component={DuckDetailsContainer}/>
         <PrivateRoute path='/mailbox' component={MailboxContainer}/>
-        <PrivateRoute render={() => <h1>404 Page not found</h1>}/>
+        <Route render={() => <h1>404 Page not found</h1>}/>
       </Switch>
     </div>
   )

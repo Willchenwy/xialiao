@@ -8,7 +8,7 @@ import { Segment, Feed, Icon } from 'semantic-ui-react'
 export default function Duck (props) {
   const starFn = props.isLiked === true ? props.handleDeleteLike : props.addAndHandleLike
   return (
-    <Segment raised={true}>
+    <Segment raised={true} style={{minHeight: '100px'}}>
       <Feed>
         <Feed.Event>
           {!props.hideReplyBtn && <Feed.Label image={avatars[props.duck.avatar]} />}

@@ -54,25 +54,34 @@ export function removeReply (replyId) {
 }
 
 export function addAndHandleReply (duckId, reply) {
-  return function (dispatch) {
+  return dispatch => {
     const { replyWithId, replyPromise } = postReply(duckId, reply)
 
     dispatch(addReply(duckId, replyWithId))
     return (
-      replyPromise.catch((error) => {
-        dispatch(removeReply(duckId, replyWithId.replyId))
-        dispatch(addReplyFailure(error))
-      })
+      replyPromise.catch(
+        error => {
+          dispatch(removeReply(duckId, replyWithId.replyId))
+          dispatch(addReplyFailure(error))
+        }
+      )
     )
   }
 }
 
 export function fetchAndHandleReplies (duckId) {
-  return function (dispatch) {
+  return dispatch => {
     dispatch(fetchingReplies())
+
     fetchReplies(duckId)
-      .then((replies) => dispatch(fetchingRepliesSuccess(replies, duckId, Date.now())))
-      .catch((error) => dispatch(fetchingRepliesFailure(error)))
+      .then(
+        replies =>
+          dispatch(fetchingRepliesSuccess(replies, duckId, Date.now()))
+      )
+      .catch(
+        error =>
+          dispatch(fetchingRepliesFailure(error))
+      )
   }
 }
 

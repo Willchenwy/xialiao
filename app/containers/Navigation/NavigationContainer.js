@@ -5,10 +5,20 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { logout } from 'redux/modules/authentication'
 import { setAndHandleUnreadListener, handleMessageRead } from 'redux/modules/unread'
+import { wilddogAuth } from 'config/constants'
+import { persistStore } from 'redux-persist'
+import { store } from '../../index'
 
 class NavigationContainer extends Component {
   componentDidMount () {
-    this.props.setAndHandleUnreadListener()
+    wilddogAuth.onAuthStateChanged(
+      user => {
+        if (user) {
+          this.props.setAndHandleUnreadListener()
+          persistStore(store).flush()
+        }
+      }
+    )
   }
 
   hendleLogout = (e) => {

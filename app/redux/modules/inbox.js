@@ -35,17 +35,32 @@ export function addNewMessage (messageId) {
 }
 
 export function fetchAndHandleInbox () {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     const uid = getState().authentication.user.uid
     dispatch(fetchingInbox())
+
     fetchUserInbox(uid)
-      .then((messages) => dispatch(addMultipleMessages(messages)))
-      .then(({ messages }) => dispatch(
-        fetchingInboxSuccess(
-          Object.keys(messages).sort((a, b) => messages[b].timestamp - messages[a].timestamp),
+      .then(
+        messages => {
+          dispatch(addMultipleMessages(messages))
+          dispatch(fetchingInboxSuccess(
+            Object.keys(messages)
+              .sort((a, b) => messages[b].timestamp - messages[a].timestamp)
+          ))
+        }
+      )
+      // .then(
+      //   ({messages}) =>
+      //     dispatch(fetchingInboxSuccess(
+      //       Object.keys(messages)
+      //         .sort((a, b) => messages[b].timestamp - messages[a].timestamp)
+      //     ))
+      // )
+      .catch(
+        error => (
+          dispatch(fetchingInboxFailure(error.message))
         )
-      ))
-      .catch((error) => dispatch(fetchingInboxFailure(error)))
+      )
   }
 }
 
@@ -71,6 +86,7 @@ export default function inbox (state = initialState, action) {
     case FETCHING_INBOX_SUCCESS:
       return {
         ...state,
+        error: '',
         isFetching: false,
         messageIds: action.messageIds,
       }

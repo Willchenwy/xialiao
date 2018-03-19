@@ -14,10 +14,10 @@ export function fetchingUsersDucks (uid) {
 }
 
 export function fetchingUsersDucksFailure (error) {
-  console.log({'fetchingUsersDucksFailure': error})
+  console.warn(error)
   return {
     type: FETCHING_USERS_DUCKS_FAILURE,
-    error: 'Error fetching users ducks ids',
+    error: 'Error fetching users ducks',
   }
 }
 
@@ -39,18 +39,28 @@ export function addSingleUsersDuck (uid, duckIds) {
 }
 
 export function fetchAndHandleUsersDucks (uid) {
-  return function (dispatch) {
+  return dispatch => {
     dispatch(fetchingUsersDucks())
+
     fetchUsersDucks(uid)
-      .then((ducks) => dispatch(addMultipleDucks(ducks)))
-      .then(({ ducks }) => dispatch(
-        fetchingUsersDucksSuccess(
-          uid,
-          Object.keys(ducks).sort((a, b) => ducks[b].timestamp - ducks[a].timestamp),
-          Date.now()
+      .then(
+        ducks =>
+          dispatch(addMultipleDucks(ducks))
+      )
+      .then(
+        ({ ducks }) =>
+          dispatch(
+            fetchingUsersDucksSuccess(
+              uid,
+              Object.keys(ducks).sort((a, b) => ducks[b].timestamp - ducks[a].timestamp),
+              Date.now()
+            )
+          ))
+      .catch(
+        error => (
+          dispatch(fetchingUsersDucksFailure(error))
         )
-      ))
-      .catch((error) => dispatch(fetchingUsersDucksFailure(error)))
+      )
   }
 }
 

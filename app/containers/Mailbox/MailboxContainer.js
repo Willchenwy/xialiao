@@ -23,6 +23,7 @@ class MailboxContainer extends Component {
           <Route path={`${match.path}/inbox`} component={InboxContainer} />
           <Route path={`${match.path}/sent`} component={SentContainer} />
           <Redirect exact={true} from={`${match.path}`} to={`${match.url}/inbox`}/>
+          <Redirect to={`${match.url}/inbox`}/>
         </Switch>
       </div >
     )

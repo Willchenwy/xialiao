@@ -60,8 +60,8 @@ function updateNavBarNotification (notification) {
 }
 
 export function setAndHandleUnreadListener () {
-  return function (dispatch, getState) {
-    if (getState().listeners.inbox === true) {
+  return (dispatch, getState) => {
+    if (getState().listeners.unread === true) {
       return
     }
 
@@ -69,37 +69,49 @@ export function setAndHandleUnreadListener () {
     dispatch(settingUnreadListener())
 
     const uid = getState().authentication.user.uid
-    listenToUsersUnread(uid, ({messages, sortedIds}, initialFetch) => {
-      dispatch(addMultipleMessages(messages))
 
-      const localRead = getState().unread.localRead
-      const inbox = getState().inbox.messageIds
-      const unreadIds = sortedIds.filter(id => !localRead.hasOwnProperty(id))
+    listenToUsersUnread(
+      uid,
+      ({messages, sortedIds}, initialFetch) => {
+        dispatch(addMultipleMessages(messages))
 
-      dispatch(updateUnread(unreadIds))
-      dispatch(updateNavBarNotification(formatUnread(messages, unreadIds)))
+        const localRead = getState().unread.localRead
+        const inbox = getState().inbox.messageIds
+        const unreadIds = sortedIds.filter(id => !localRead.hasOwnProperty(id))
 
-      if (unreadIds.length > 0 && inbox.includes(unreadIds[0]) === false) {
-        dispatch(addNewMessage(unreadIds[0]))
-      }
+        dispatch(updateUnread(unreadIds))
+        dispatch(updateNavBarNotification(formatUnread(messages, unreadIds)))
 
-      if (initialFetch) {
-        dispatch(settingUnreadListenerSuccess())
-        deleteFromUsersUnread(formatRemove(localRead, uid))
-          .then(dispatch(resetLocalRead()))
-      }
-    }, (error) => (dispatch(settingUnreadListenerFailure(error))))
+        if (unreadIds.length > 0 && inbox.includes(unreadIds[0]) === false) {
+          dispatch(addNewMessage(unreadIds[0]))
+        }
+
+        if (initialFetch === true) {
+          dispatch(settingUnreadListenerSuccess())
+          deleteFromUsersUnread(formatRemove(localRead, uid))
+            .then(
+              dispatch(resetLocalRead())
+            )
+        }
+      },
+      error => (
+        dispatch(settingUnreadListenerFailure(error))
+      )
+    )
   }
 }
 
 export function handleMessageRead (message) {
-  return function (dispatch) {
+  return dispatch => {
     const messageId = {[`${message.messageId}`]: true}
+
     deleteFromUsersUnread(formatRemove(messageId, message.receiverId))
-      .catch((error) => {
-        dispatch(addToLocalRead(message))
-        console.warn('Error in remove unread: ', error)
-      })
+      .catch(
+        error => {
+          dispatch(addToLocalRead(message))
+          console.warn(error)
+        }
+      )
   }
 }
 
@@ -127,8 +139,8 @@ export default function unread (state = initialState, action) {
     case SETTING_UNREAD_LISTENER_SUCCESS:
       return {
         ...state,
-        isFetching: false,
         error: '',
+        isFetching: false,
       }
     case UPDATE_UNREAD:
       return {

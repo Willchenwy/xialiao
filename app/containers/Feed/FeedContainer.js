@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Feed } from 'components'
-import * as feedActionCreators from 'redux/modules/feed'
-import { duckFanout } from 'redux/modules/ducks'
-import { setUsersLikes } from 'redux/modules/usersLikes'
 import { formatDuck } from 'helpers/utils'
+import { duckFanout } from 'redux/modules/ducks'
+import * as feedActionCreators from 'redux/modules/feed'
+import { setUsersLikes } from 'redux/modules/usersLikes'
 
 class FeedContainer extends Component {
   componentDidMount () {
@@ -20,7 +20,13 @@ class FeedContainer extends Component {
   }
 
   render () {
-    const {duckIds, isFetching, newDucksAvailable, resetNewDucksAvailable} = this.props
+    const {
+      duckIds,
+      isFetching,
+      newDucksAvailable,
+      resetNewDucksAvailable,
+    } = this.props
+
     return (
       <Feed
         duckIds={duckIds}
@@ -54,7 +60,11 @@ function mapStateToProps ({ feed, authentication }) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({...feedActionCreators, duckFanout, setUsersLikes}, dispatch)
+  return bindActionCreators({
+    ...feedActionCreators,
+    setUsersLikes,
+    duckFanout,
+  }, dispatch)
 }
 
 export default connect(

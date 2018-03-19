@@ -12,39 +12,91 @@ const SIGNUP_FAILURE = 'SIGNUP_FAILURE'
 const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
 const LOGOUT = 'LOGOUT'
 
+function loginRequest () {
+  return {
+    type: LOGIN_REQUEST,
+  }
+}
+
+function loginSuccess (user) {
+  return {
+    type: LOGIN_SUCCESS, user,
+  }
+}
+
+function loginFailure (error) {
+  console.warn(error)
+  return {
+    type: LOGIN_FAILURE,
+    error: 'Error login',
+  }
+}
+
+function signUpRequest () {
+  return {
+    type: SIGNUP_REQUEST,
+  }
+}
+
+function signUpSuccess (user) {
+  return {
+    type: SIGNUP_SUCCESS,
+    user,
+  }
+}
+
+function signUpFailure (error) {
+  console.warn(error)
+  return {
+    type: SIGNUP_FAILURE,
+    error: 'Error sign up',
+  }
+}
+
+function logoutSuccess () {
+  return {
+    type: LOGOUT,
+  }
+}
+
+function logoutFailure (error) {
+  console.warn(error)
+  return {
+    type: LOGOUT_FAILURE,
+    error: 'Error logout',
+  }
+}
+
 export function login (email, password) {
   return dispatch => {
-    dispatch(request())
+    dispatch(loginRequest())
 
     return loginUser(email, password)
       .then(
         user => {
           const userInfo = formatUserInfo(user)
-          dispatch(success(userInfo))
+          dispatch(loginSuccess(userInfo))
           store.dispatch(push('/feed'))
-        },
+        }
+      )
+      .catch(
         error => (
-          dispatch(failure(error.message))
+          dispatch(loginFailure(error))
         )
       )
   }
-
-  function request () { return { type: LOGIN_REQUEST } }
-  function success (user) { return { type: LOGIN_SUCCESS, user } }
-  function failure (error) { return { type: LOGIN_FAILURE, error } }
 }
 
 export function signUp (email, password, displayName) {
   return dispatch => {
-    dispatch(request())
+    dispatch(signUpRequest())
 
     const photoURL = randomAvatar()
     return signUpUser(email, password, displayName, photoURL)
       .then(
         user => {
-          console.log(user)
           const userInfo = formatUserInfo(user)
-          dispatch(success(userInfo))
+          dispatch(signUpSuccess(userInfo))
           store.dispatch(push('/feed'))
           return userInfo
         }
@@ -53,13 +105,11 @@ export function signUp (email, password, displayName) {
         userInfo => saveUser(userInfo)
       )
       .catch(
-        error => dispatch(failure(error.message))
+        error => (
+          dispatch(signUpFailure(error.message))
+        )
       )
   }
-
-  function request () { return { type: SIGNUP_REQUEST } }
-  function success (user) { return { type: SIGNUP_SUCCESS, user } }
-  function failure (error) { return { type: SIGNUP_FAILURE, error } }
 }
 
 export function logout () {
@@ -67,15 +117,16 @@ export function logout () {
     logoutUser()
       .then(
         () => {
-          dispatch(success())
+          dispatch(logoutSuccess())
           store.dispatch(push('/'))
-        },
-        error => dispatch(failure(error))
+        }
+      )
+      .catch(
+        error => (
+          dispatch(logoutFailure(error.message))
+        )
       )
   }
-
-  function success () { return { type: LOGOUT } }
-  function failure (error) { return { type: LOGOUT_FAILURE, error } }
 }
 
 const iniitialState = {
@@ -101,6 +152,7 @@ export default function authentication (state = iniitialState, action) {
     case SIGNUP_SUCCESS:
       return {
         ...state,
+        error: '',
         signingUp: false,
         loggedIn: true,
         user: action.user,
@@ -108,6 +160,7 @@ export default function authentication (state = iniitialState, action) {
     case LOGIN_SUCCESS:
       return {
         ...state,
+        error: '',
         loggingIn: false,
         loggedIn: true,
         user: action.user,
@@ -132,6 +185,7 @@ export default function authentication (state = iniitialState, action) {
     case LOGOUT:
       return {
         ...state,
+        error: '',
         loggedIn: false,
         user: {},
       }

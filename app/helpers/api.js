@@ -58,8 +58,7 @@ export function saveMessage (message) {
     messagePromise,
     saveToUsersSent(messageId, message),
     saveToUsersUnread(messageId, message),
-  ])
-    .then(() => ({...message, messageId}))
+  ]).then(() => ({...message, messageId}))
 }
 
 export function listenToFeed (cb, errorCb) {
@@ -119,7 +118,7 @@ export function fetchUserSent (uid) {
 export function fetchMessage (messageId, uid, type) {
   if (type === 'USERSINBOX') {
     return ref.child(`usersInbox/${uid}/${messageId}`).once('value')
-      .then((snapshot) => snapshot.val() || {})
+      .then((snapshot) => snapshot.val())
   } else {
     return ref.child(`usersSent/${uid}/${messageId}`).once('value')
       .then((snapshot) => snapshot.val() || {})

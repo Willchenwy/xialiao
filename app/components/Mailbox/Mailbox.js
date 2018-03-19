@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Container, Menu } from 'semantic-ui-react'
+import { Container, Menu, Divider } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
 export default function Mailbox ({match}) {
   return (
-    <Container text={true}>
+    <Container style={{width: '1000px', marginTop: '40px'}}>
       <Menu pointing={true} secondary={true}>
         <Menu.Item
           name='Inbox'
@@ -16,6 +16,7 @@ export default function Mailbox ({match}) {
           as={NavLink}
           to={`${match.url}/sent`}/>
       </Menu>
+      <Divider hidden={true}/>
     </Container>
   )
 }

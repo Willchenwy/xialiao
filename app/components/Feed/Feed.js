@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { DuckContainer, ComposeContainer, FriendsListContainer } from 'containers'
-import { Container, Grid, Loader, Message, Segment, Dimmer, Image, Header } from 'semantic-ui-react'
-import {paragraph} from 'helpers/images'
+import { Container, Grid, Message, Header, Divider } from 'semantic-ui-react'
+import { LongLoading } from 'helpers/loading'
 
 function NewDucksAvailable ({handleClick}) {
   return (
@@ -15,14 +15,9 @@ function NewDucksAvailable ({handleClick}) {
 export default function Feed (props) {
   const {duckIds, isFetching, handleduckFanout, resetNewDucksAvailable, newDucksAvailable} = props
   return (
-    <Container text={true}>
+    <Container style={{width: '1000px'}}>
       {isFetching === true
-        ? <Segment>
-          <Dimmer active={true} inverted={true}>
-            <Loader size='large'>Loading</Loader>
-          </Dimmer>
-          <Image src={paragraph} />
-        </Segment>
+        ? <LongLoading />
         : <Grid>
           <Grid.Row>
             <Grid.Column width={12} floated='right'>
@@ -34,6 +29,7 @@ export default function Feed (props) {
               </ComposeContainer>
             </Grid.Column>
           </Grid.Row>
+          <Divider section={true} hidden={true}/>
           <Grid.Row>
             <Grid.Column width={4} textAlign='left'>
               <FriendsListContainer />

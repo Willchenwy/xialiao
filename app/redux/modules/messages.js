@@ -7,6 +7,25 @@ const REMOVE_MESSAGE_FETCHING = 'REMOVE_MESSAGE_FETCHING'
 const FETCHING_MESSAGE_FAILURE = 'FETCHING_MESSAGE_FAILURE'
 const FETCHING_MESSAGE_SUCCESS = 'FETCHING_MESSAGE_SUCCESS'
 
+function fetchingMessage () {
+  return {
+    type: FETCHING_MESSSAGE,
+  }
+}
+function fetchingMessageSuccess (message) {
+  return {
+    type: FETCHING_MESSAGE_SUCCESS,
+    message,
+  }
+}
+function fetchingMessageFailure (error) {
+  console.warn(error)
+  return {
+    type: FETCHING_MESSAGE_FAILURE,
+    error: 'Error fetching message',
+  }
+}
+
 export function addMessage (message) {
   return {
     type: ADD_MESSAGE,
@@ -28,19 +47,19 @@ export function removeMessageFetching () {
 }
 
 export function fetchAndHandleMessage (messageId, uid, type) {
-  return function (dispatch) {
-    dispatch(fetching())
+  return dispatch => {
+    dispatch(fetchingMessage())
 
     fetchMessage(messageId, uid, type)
       .then(
-        message => dispatch(success(message)),
-        error => dispatch(failure(error))
+        message =>
+          dispatch(fetchingMessageSuccess(message))
+      )
+      .catch(
+        error =>
+          dispatch(fetchingMessageFailure(error))
       )
   }
-
-  function fetching () { return { type: FETCHING_MESSSAGE } }
-  function success (message) { return { type: FETCHING_MESSAGE_SUCCESS, message } }
-  function failure (error) { return { type: FETCHING_MESSAGE_FAILURE, error: `Error fetching message: ${error}` } }
 }
 
 const initialState = {
@@ -68,6 +87,7 @@ export default function messages (state = initialState, action) {
     case FETCHING_MESSAGE_SUCCESS:
       return {
         ...state,
+        error: '',
         isFetching: false,
         [action.message.messageId]: action.message,
       }
@@ -80,6 +100,7 @@ export default function messages (state = initialState, action) {
     case REMOVE_MESSAGE_FETCHING:
       return {
         ...state,
+        error: '',
         isFetching: false,
       }
     default:

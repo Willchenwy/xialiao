@@ -24,6 +24,7 @@ class LoginContainer extends Component {
 LoginContainer.propTypes = {
   login: PropTypes.func.isRequired,
   loggingIn: PropTypes.any,
+  error: PropTypes.string.isRequired,
 }
 
 function mapStateToProps ({authentication}) {

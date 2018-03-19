@@ -2,24 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Inbox } from 'components'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { MessageDetailContainer } from 'containers'
 
 class InboxContainer extends Component {
   render () {
-    const {match, inboxMessageIds, isFetchingInbox} = this.props
+    const {match, inboxMessageIds, isFetchingInbox, error} = this.props
     return (
-      <div>
-        <Inbox
-          isFetchingInbox={isFetchingInbox}
-          inboxMessageIds={inboxMessageIds}
-          match={match} />
-        <Switch>
-          <Route path={`${match.path}/:messageId`} component={MessageDetailContainer} />
-          {typeof inboxMessageIds[0] !== 'undefined' &&
-					<Redirect exact={true} from={`${match.path}`} to={`${match.url}/${inboxMessageIds[0]}`}/>}
-        </Switch>
-      </div>
+      <Inbox
+        isFetchingInbox={isFetchingInbox}
+        inboxMessageIds={inboxMessageIds}
+        match={match}
+        error={error} />
     )
   }
 }
@@ -28,10 +20,12 @@ InboxContainer.propTypes = {
   isFetchingInbox: PropTypes.bool.isRequired,
   inboxMessageIds: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired,
+  error: PropTypes.string.isRequired,
 }
 
-function mapStateToProps ({inbox}) {
+function mapStateToProps ({messages, inbox}) {
   return {
+    error: messages.error,
     isFetchingInbox: inbox.isFetching,
     inboxMessageIds: inbox.messageIds,
   }

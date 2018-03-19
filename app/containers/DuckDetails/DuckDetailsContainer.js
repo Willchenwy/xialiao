@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Container, Grid } from 'semantic-ui-react'
 import { DuckDetails } from 'components'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
@@ -29,15 +28,11 @@ class DuckDetailsContainer extends Component {
 
   render () {
     return (
-      <Container text={true}>
-        <Grid>
-          <DuckDetails
-            duck={this.props.ducks[this.props.duckId]}
-            isFetching={this.props.isFetching}
-            error={this.props.error}
-            handleFormSubmit={this.handleFormSubmit} />
-        </Grid>
-      </Container>
+      <DuckDetails
+        duck={this.props.ducks[this.props.duckId]}
+        isFetching={this.props.isFetching}
+        error={this.props.error}
+        handleFormSubmit={this.handleFormSubmit} />
     )
   }
 }

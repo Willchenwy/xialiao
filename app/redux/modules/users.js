@@ -1,5 +1,6 @@
 import { fetchUser, listenToUsers } from 'helpers/api'
 import { addListener } from 'redux/modules/listeners'
+import { formatUser } from 'helpers/utils'
 
 const FETCHING_USER = 'FETCHING_USER'
 const FETCHING_USER_FAILURE = 'FETCHING_USER_FAILURE'
@@ -43,7 +44,7 @@ function settingUsersListenerFailure (error) {
   console.warn(error)
   return {
     type: SETTING_USERS_LISTENER_FAILURE,
-    error: 'Error fetching users',
+    error: 'Error setting users listener',
   }
 }
 
@@ -68,16 +69,23 @@ export function removeUserFetching () {
 }
 
 export function fetchAndHandleUser (uid) {
-  return function (dispatch) {
+  return dispatch => {
     dispatch(fetchingUser())
+
     return fetchUser(uid)
-      .then((user) => dispatch(fetchingUserSuccess(uid, user, Date.now())))
-      .catch((error) => dispatch(fetchingUserFailure(error)))
+      .then(
+        user =>
+          dispatch(fetchingUserSuccess(uid, user, Date.now()))
+      )
+      .catch(
+        error =>
+          dispatch(fetchingUserFailure(error))
+      )
   }
 }
 
 export function setAndHandleUsersListener () {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     if (getState().listeners.users === true) {
       return
     }
@@ -85,20 +93,15 @@ export function setAndHandleUsersListener () {
     dispatch(addListener('users'))
     dispatch(settingUsersListener())
 
-    listenToUsers(({users, uids}, initialFetch) => {
-      dispatch(addMultipleUsers(Object.keys(users)
-        .reduce((obj, uid) => {
-          return {
-            ...obj,
-            [uid]: {
-              lastUpdated: Date.now(),
-              info: users[uid],
-            },
-          }
-        }, {})
-      ))
-      dispatch(settingUsersListenerSuccess(uids))
-    }, (error) => dispatch(settingUsersListenerFailure(error)))
+    listenToUsers(
+      ({users, uids}, initialFetch) => {
+        dispatch(addMultipleUsers(formatUser(users)))
+        dispatch(settingUsersListenerSuccess(uids))
+      },
+      error => (
+        dispatch(settingUsersListenerFailure(error))
+      )
+    )
   }
 }
 
@@ -171,6 +174,7 @@ export default function users (state = initialState, action) {
     case SETTING_USERS_LISTENER_SUCCESS:
       return {
         ...state,
+        error: '',
         uids: action.uids,
         isSettingLintener: false,
       }

@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form'
 import { Form, Button } from 'semantic-ui-react'
 import { signUpValidate as validate } from 'helpers/formValidator'
 
-const renderField = ({
+const RenderField = ({
   input,
   type,
   placeholder,
@@ -27,21 +27,21 @@ function SignUp (props) {
       <Form.Field>
         <Field
           name='displayName'
-          component={renderField}
+          component={RenderField}
           type='text'
           placeholder='username'/>
       </Form.Field>
       <Form.Field>
         <Field
           name='email'
-          component={renderField}
+          component={RenderField}
           type='text'
           placeholder='e-mail'/>
       </Form.Field>
       <Form.Field>
         <Field
           name='password'
-          component={renderField}
+          component={RenderField}
           type='password'
           placeholder='password'/>
       </Form.Field>
@@ -52,6 +52,13 @@ function SignUp (props) {
         type='submit'>Sign Up</Button>
     </Form>
   )
+}
+
+RenderField.propTypes = {
+  input: PropTypes.object.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  meta: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
 }
 
 SignUp.propTypes = {

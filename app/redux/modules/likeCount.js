@@ -14,7 +14,7 @@ export function fetchingCountFailure (error) {
   console.warn(error)
   return {
     type: FETCHING_COUNT_FAILURE,
-    error: 'Error fetching duck\'s count',
+    error: 'Error fetching like count',
   }
 }
 
@@ -27,11 +27,19 @@ export function fetchingCountSuccess (duckId, count) {
 }
 
 export function initLikeFetch (duckId) {
-  return function (dispatch) {
+  return dispatch => {
     dispatch(fetchingCount())
+
     fetchLikeCount(duckId)
-      .then((count) => dispatch(fetchingCountSuccess(duckId, count)))
-      .catch((error) => dispatch(fetchingCountFailure(error)))
+      .then(
+        count =>
+          dispatch(fetchingCountSuccess(duckId, count))
+      )
+      .catch(
+        error => (
+          dispatch(fetchingCountFailure(error))
+        )
+      )
   }
 }
 
@@ -67,7 +75,8 @@ export default function likeCount (state = initialState, action) {
     case FETCHING_COUNT_SUCCESS:
       return {
         ...state,
-        ...initialState,
+        error: '',
+        isFetching: false,
         [action.duckId]: action.count,
       }
     case ADD_LIKE:

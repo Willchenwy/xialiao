@@ -52,26 +52,41 @@ export function addMultipleDucks (ducks) {
 }
 
 export function duckFanout (duck) {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     const uid = getState().authentication.user.uid
+
     return (
       saveDuck(duck)
-        .then((duckWithId) => {
-          dispatch(addDuck(duckWithId))
-          dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
-        })
-        .then(store.dispatch(reset('compose')))
-        .catch((error) => console.warn('Error in duckFanout: ', error))
+        .then(
+          duckWithId => {
+            dispatch(addDuck(duckWithId))
+            dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
+          }
+        )
+        .then(
+          store.dispatch(reset('compose'))
+        )
+        .catch(
+          error =>
+            console.warn(error))
     )
   }
 }
 
 export function fetchAndHandleDuck (duckId) {
-  return function (dispatch) {
+  return dispatch => {
     dispatch(fetchingDuck())
+
     fetchDuck(duckId)
-      .then((duck) => dispatch(fetchingDuckSuccess(duck)))
-      .catch((error) => dispatch(fetchingDuckFailure(error)))
+      .then(
+        duck =>
+          dispatch(fetchingDuckSuccess(duck))
+      )
+      .catch(
+        error => (
+          dispatch(fetchingDuckFailure(error.message))
+        )
+      )
   }
 }
 

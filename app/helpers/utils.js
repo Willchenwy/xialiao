@@ -67,33 +67,57 @@ export function formatDropdownOptions (response, searchQuery) {
           response[key],
         ]
         return obj
-      }, {dropdownOptions: [], receiversInfo: []}
-    )
+      }, {dropdownOptions: [], receiversInfo: []})
 }
 
 export function formatUnread (messages, sortedIds) {
-  return sortedIds.reduce((unread, id) => {
-    return [
-      ...unread,
-      {
-        timestamp: messages[id].timestamp,
-        image: {avatar: true, src: avatars[messages[id].senderAvatar]},
-        text: `${messages[id].senderName} send you a message`,
-      },
-    ]
-  }, [])
+  return sortedIds.reduce(
+    (unread, id) => {
+      return [
+        ...unread,
+        {
+          timestamp: messages[id].timestamp,
+          image: {avatar: true, src: avatars[messages[id].senderAvatar]},
+          text: `${messages[id].senderName} send you a message`,
+        },
+      ]
+    }, [])
 }
 
 export function formatRemove (messageIds, uid) {
   return Object.keys(messageIds)
-    .reduce((obj, key) => {
-      const path = `${uid}/${key}`
-      console.log({'path': path})
-      return {
-        ...obj,
-        [path]: null,
-      }
-    }, {})
+    .reduce(
+      (obj, key) => {
+        const path = `${uid}/${key}`
+        return {
+          ...obj,
+          [path]: null,
+        }
+      }, {})
+}
+
+export function formatUser (users) {
+  return Object.keys(users)
+    .reduce(
+      (obj, uid) => {
+        return {
+          ...obj,
+          [uid]: {
+            lastUpdated: Date.now(),
+            info: users[uid],
+          },
+        }
+      }, {})
+}
+
+export function formatReply ({name, uid, avatar}, reply) {
+  return {
+    name,
+    reply,
+    uid,
+    avatar,
+    timestamp: Date.now(),
+  }
 }
 
 export function formatTimestamp (timestamp) {
@@ -115,16 +139,6 @@ export function staleDucks (timestamp) {
 
 export function staleReplies (timestamp) {
   return getMilliseconds(timestamp) > repliesExpirationLength
-}
-
-export function formatReply ({name, uid, avatar}, reply) {
-  return {
-    name,
-    reply,
-    uid,
-    avatar,
-    timestamp: Date.now(),
-  }
 }
 
 export function randomAvatar () {

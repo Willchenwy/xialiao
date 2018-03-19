@@ -10,7 +10,7 @@ function Reply ({ comment }) {
     <Comment>
       <Comment.Avatar src={avatars[comment.avatar]} />
       <Comment.Content>
-        <Comment.Author as={Link} to={`${comment.uid}`}>{comment.name}</Comment.Author>
+        <Comment.Author as={Link} to={`/user/${comment.uid}`}>{comment.name}</Comment.Author>
         <Comment.Metadata>
           <div>{formatTimestamp(comment.timestamp)}</div>
         </Comment.Metadata>
@@ -20,10 +20,8 @@ function Reply ({ comment }) {
   )
 }
 
-Replies.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  error: PropTypes.string.isRequired,
-  replies: PropTypes.object,
+Reply.propTypes = {
+  comment: PropTypes.object.isRequired,
 }
 
 export default function Replies ({ isFetching, error, replies }) {
@@ -49,4 +47,10 @@ export default function Replies ({ isFetching, error, replies }) {
           <h3>Be the first to comment.</h3>}
     </Grid.Row>
   )
+}
+
+Replies.propTypes = {
+  isFetching: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  replies: PropTypes.object,
 }

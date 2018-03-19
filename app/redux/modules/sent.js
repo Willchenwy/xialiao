@@ -35,17 +35,26 @@ export function addMessageIdToSent (messageId) {
 }
 
 export function fetchAndHandleSent () {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     const uid = getState().authentication.user.uid
     dispatch(fetchingSent())
+
     fetchUserSent(uid)
-      .then((messages) => dispatch(addMultipleMessages(messages)))
-      .then(({ messages }) => dispatch(
-        fetchingSentSuccess(
-          Object.keys(messages).sort((a, b) => messages[b].timestamp - messages[a].timestamp),
-        )
-      ))
-      .catch((error) => dispatch(fetchingSentFailure(error)))
+      .then(
+        messages =>
+          dispatch(addMultipleMessages(messages))
+      )
+      .then(
+        ({ messages }) =>
+          dispatch(fetchingSentSuccess(
+            Object.keys(messages)
+              .sort((a, b) => messages[b].timestamp - messages[a].timestamp),
+          ))
+      )
+      .catch(
+        error =>
+          dispatch(fetchingSentFailure(error))
+      )
   }
 }
 
@@ -71,6 +80,7 @@ export default function sent (state = initialState, action) {
     case FETCHING_SENT_SUCCESS:
       return {
         ...state,
+        error: '',
         isFetching: false,
         messageIds: action.messageIds,
       }

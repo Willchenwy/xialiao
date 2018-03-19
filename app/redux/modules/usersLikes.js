@@ -45,16 +45,15 @@ function removeLike (duckId) {
 }
 
 export function addAndHandleLike (duckId, e) {
-  console.log(duckId)
   e.stopPropagation()
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     dispatch(addLike(duckId))
 
     const uid = getState().authentication.user.uid
     Promise.all([
       saveToUsersLikes(uid, duckId),
       incrementNumberOfLikes(duckId),
-    ]).catch((error) => {
+    ]).catch(error => {
       console.warn(error)
       dispatch(removeLike(duckId))
     })
@@ -63,14 +62,14 @@ export function addAndHandleLike (duckId, e) {
 
 export function handleDeleteLike (duckId, e) {
   e.stopPropagation()
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     dispatch(removeLike(duckId))
 
     const uid = getState().authentication.user.uid
     Promise.all([
       deleteFromUsersLikes(uid, duckId),
       decrementNumberOfLikes(duckId),
-    ]).catch((error) => {
+    ]).catch(error => {
       console.warn(error)
       dispatch(addLike(duckId))
     })
@@ -78,12 +77,19 @@ export function handleDeleteLike (duckId, e) {
 }
 
 export function setUsersLikes () {
-  return function (dispatch, getState) {
+  return (dispatch, getState) => {
     const uid = getState().authentication.user.uid
     dispatch(fetchingLikes())
+
     fetchUsersLikes(uid)
-      .then((likes) => dispatch(fetchingLikesSuccess(likes)))
-      .catch((error) => dispatch(fetchingLikesFailure(error)))
+      .then(
+        likes =>
+          dispatch(fetchingLikesSuccess(likes))
+      )
+      .catch(
+        error =>
+          dispatch(fetchingLikesFailure(error))
+      )
   }
 }
 

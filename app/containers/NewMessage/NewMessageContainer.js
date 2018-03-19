@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import PropTypes from 'prop-types'
 import { NewMessage } from 'components'
 import * as newMessageActions from 'redux/modules/newMessage'
 import { closeModal } from 'redux/modules/modal'
-import { formatNewMessage } from '../../helpers/utils'
+import { formatNewMessage } from 'helpers/utils'
 
 class NewMessageContainer extends Component {
   handleFormSubmit = (formData) => {
@@ -29,9 +28,8 @@ class NewMessageContainer extends Component {
     return (
       <NewMessage
         handleFormSubmit={this.handleFormSubmit}
-        handleSubmit={this.props.handleSubmit}
         onSearchQueryChane={this.onSearchQueryChane}
-        dropdownOptions={this.props.pristine ? [] : this.props.dropdownOptions}
+        dropdownOptions={this.props.dropdownOptions}
         isFetching={this.props.isFetching}/>
     )
   }
@@ -42,10 +40,8 @@ NewMessageContainer.propTypes = {
   receiversInfo: PropTypes.array.isRequired,
   dropdownOptions: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  pristine: PropTypes.bool.isRequired,
   fetchDropdownOptions: PropTypes.func.isRequired,
   invalidSearchQuery: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
   closeModal: PropTypes.func.isRequired,
 }
@@ -63,11 +59,7 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators({...newMessageActions, closeModal}, dispatch)
 }
 
-const newMessageContainer = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(NewMessageContainer)
-
-export default reduxForm({
-  form: 'newMessage',
-})(newMessageContainer)
