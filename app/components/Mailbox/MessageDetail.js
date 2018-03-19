@@ -12,11 +12,13 @@ export default function MessageDetail ({message, isFetching, handleMessageReply,
         : error !== ''
           ? <p>error</p>
           : <Card raised={true} fluid={true} style={{minHeight: '600px'}}>
-            <Card.Content>
+            <Card.Content style={{padding: '30px'}}>
               <Card.Meta textAlign='right'>3 days ago</Card.Meta>
               <Card.Header>{message.subject}</Card.Header>
               <Card.Meta>From {message.senderName} to me</Card.Meta>
-              <Card.Description><pre style={{whiteSpace: 'pre-wrap', fontFamily: 'Lato'}}>{message.text}</pre></Card.Description>
+              <Card.Description>
+                <pre style={{whiteSpace: 'pre-wrap', fontFamily: 'Lato'}}>{message.text}</pre>
+              </Card.Description>
             </Card.Content>
             <Card.Content extra={true}>
               <ComposeContainer

@@ -30,6 +30,7 @@ LoginContainer.propTypes = {
 function mapStateToProps ({authentication}) {
   return {
     loggingIn: authentication.loggingIn,
+    error: authentication.error,
   }
 }
 
