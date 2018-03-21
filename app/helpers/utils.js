@@ -160,12 +160,15 @@ export function timeSince (date) {
   interval = Math.floor(seconds / 3600)
   if (interval > 1) {
     if (interval < 48) {
-      return 'a day ago'
+      return '1 day ago'
     }
     return interval + ' hours ago'
   }
   interval = Math.floor(seconds / 60)
   if (interval > 1) {
+    if (interval > 60) {
+      return '1 hour ago'
+    }
     return interval + ' minutes ago'
   }
   return 'Just now'
