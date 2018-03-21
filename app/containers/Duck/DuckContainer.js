@@ -3,12 +3,14 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Duck } from 'components'
+import { timeSince } from 'helpers/utils'
 import * as usersLikesActions from 'redux/modules/usersLikes'
 
 class DuckContainer extends Component {
   render () {
+    const time = this.props.duck && timeSince(this.props.duck.timestamp)
     return (
-      <Duck {...this.props} />
+      <Duck {...this.props} time={time}/>
     )
   }
 }

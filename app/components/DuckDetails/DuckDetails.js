@@ -25,7 +25,7 @@ export default function DuckDetails (props) {
                         <Feed.User as={Link} to={`/user/${props.duck.uid}`}>{props.duck.name} </Feed.User>
                       </Feed.Summary>
                       <Feed.Meta>
-                        <Feed.Date>posted 3 days ago</Feed.Date>
+                        <Feed.Date>{`${props.time}`}</Feed.Date>
                       </Feed.Meta>
                     </Feed.Content>
                   </Feed.Event>
@@ -58,4 +58,5 @@ DuckDetails.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   error: PropTypes.string.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
+  time: PropTypes.any,
 }

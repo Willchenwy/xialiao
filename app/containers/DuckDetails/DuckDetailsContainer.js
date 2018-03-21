@@ -6,8 +6,8 @@ import { DuckDetails } from 'components'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
 import * as repliesActionCreators from 'redux/modules/replies'
-import { formatReply } from 'helpers/utils'
-import {reset} from 'redux-form'
+import { formatReply, timeSince } from 'helpers/utils'
+import { reset } from 'redux-form'
 
 class DuckDetailsContainer extends Component {
   componentDidMount () {
@@ -27,12 +27,15 @@ class DuckDetailsContainer extends Component {
   }
 
   render () {
+    const {ducks, duckId, isFetching, error} = this.props
+    const time = ducks[duckId] && timeSince(ducks[duckId].timestamp)
     return (
       <DuckDetails
-        duck={this.props.ducks[this.props.duckId]}
-        isFetching={this.props.isFetching}
-        error={this.props.error}
-        handleFormSubmit={this.handleFormSubmit} />
+        duck={ducks[duckId]}
+        isFetching={isFetching}
+        error={error}
+        handleFormSubmit={this.handleFormSubmit}
+        time={time} />
     )
   }
 }

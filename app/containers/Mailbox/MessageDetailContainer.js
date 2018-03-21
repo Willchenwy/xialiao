@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import { handleMessageRead } from 'redux/modules/unread'
 import { fetchAndHandleMessage, removeMessageFetching } from 'redux/modules/messages'
 import { sendMessage } from 'redux/modules/newMessage'
-import { formatMessageReply } from '../../helpers/utils'
+import { formatMessageReply, timeSince } from 'helpers/utils'
 
 class MessageDetailContainer extends Component {
   componentDidMount () {
@@ -33,11 +33,14 @@ class MessageDetailContainer extends Component {
   }
 
   render () {
+    const {messages, messageId, isFetching, error} = this.props
+    const time = messages[messageId] && timeSince(messages[messageId].timestamp)
     return (
       <MessageDetail
-        message={this.props.messages[this.props.messageId]}
-        isFetching={this.props.isFetching}
-        error={this.props.error}
+        time={time}
+        message={messages[messageId]}
+        isFetching={isFetching}
+        error={error}
         handleMessageReply={this.handleMessageReply} />
     )
   }

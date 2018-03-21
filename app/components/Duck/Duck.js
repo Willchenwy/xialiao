@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { avatars } from 'helpers/images'
-import { formatTimestamp } from 'helpers/utils'
 import { Segment, Feed, Icon } from 'semantic-ui-react'
 
 export default function Duck (props) {
@@ -18,7 +17,7 @@ export default function Duck (props) {
                   <Feed.User as={Link} to={`/user/${props.duck.uid}`}>
                     {props.duck.name}
                   </Feed.User>
-                  <Feed.Date>{formatTimestamp(props.duck.timestamp)}</Feed.Date>
+                  <Feed.Date>{props.time}</Feed.Date>
                 </Feed.Summary>}
             <Feed.Extra text={true} as={Link} to={`/duckDetail/${props.duck.duckId}`}>
               {props.duck.text}
@@ -55,4 +54,5 @@ Duck.propTypes = {
   hideReplyBtn: PropTypes.bool.isRequired,
   hideLikeCount: PropTypes.bool.isRequired,
   pathname: PropTypes.string.isRequired,
+  time: PropTypes.any,
 }

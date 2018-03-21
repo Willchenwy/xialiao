@@ -13,6 +13,7 @@ class NavigationContainer extends Component {
   componentDidMount () {
     wilddogAuth.onAuthStateChanged(
       user => {
+        console.log(user)
         if (user) {
           this.props.setAndHandleUnreadListener()
           persistStore(store).flush()

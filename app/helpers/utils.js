@@ -120,11 +120,6 @@ export function formatReply ({name, uid, avatar}, reply) {
   }
 }
 
-export function formatTimestamp (timestamp) {
-  const date = new Date(timestamp)
-  return `${date.getMonth() + 1}/${date.getDate()}/${date.getYear()}`
-}
-
 function getMilliseconds (timestamp) {
   return new Date().getTime() - new Date(timestamp).getTime()
 }
@@ -142,6 +137,36 @@ export function staleReplies (timestamp) {
 }
 
 export function randomAvatar () {
-  var keys = Object.keys(avatars)
+  const keys = Object.keys(avatars)
   return keys[ keys.length * Math.random() << 0 ]
+}
+
+export function timeSince (date) {
+  let seconds = Math.floor((new Date() - date) / 1000)
+
+  let interval = Math.floor(seconds / 31536000)
+
+  if (interval > 1) {
+    return interval + ' years ago'
+  }
+  interval = Math.floor(seconds / 2592000)
+  if (interval > 1) {
+    return interval + ' months ago'
+  }
+  interval = Math.floor(seconds / 86400)
+  if (interval > 1) {
+    return interval + ' days ago'
+  }
+  interval = Math.floor(seconds / 3600)
+  if (interval > 1) {
+    if (interval < 48) {
+      return 'a day ago'
+    }
+    return interval + ' hours ago'
+  }
+  interval = Math.floor(seconds / 60)
+  if (interval > 1) {
+    return interval + ' minutes ago'
+  }
+  return 'Just now'
 }

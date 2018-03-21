@@ -12,8 +12,10 @@ export function signUpValidate (values) {
   const errors = {}
   if (!values.displayName) {
     errors.displayName = 'Required'
-  } else if (values.displayName.length > 15 || values.displayName.length < 4) {
+  } else if (values.displayName.length > 15) {
     errors.displayName = 'Must be 15 characters or less'
+  } else if (values.displayName.length < 3) {
+    errors.displayName = 'Must be at least 3 characters or more'
   }
   if (!values.email) {
     errors.email = 'Required'

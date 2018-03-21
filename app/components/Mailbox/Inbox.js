@@ -15,7 +15,7 @@ function Inbox (props) {
             ? <LongLoading />
             : error !== ''
               ? <p>error</p>
-              : <Segment compact={true} style={{minHeight: '700px'}} raised={true}>
+              : <Segment compact={true} style={{minHeight: '500px'}} raised={true}>
                 <Menu
                   secondary={true}
                   vertical={true}>

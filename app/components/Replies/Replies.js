@@ -1,18 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { formatTimestamp } from 'helpers/utils'
 import { Comment, Grid, Segment, Loader, Image, Dimmer } from 'semantic-ui-react'
 import { shortParagraph, avatars } from 'helpers/images'
+import { timeSince } from 'helpers/utils'
 
 function Reply ({ comment }) {
+  const time = comment && timeSince(comment.timestamp)
   return (
     <Comment>
       <Comment.Avatar src={avatars[comment.avatar]} />
       <Comment.Content>
         <Comment.Author as={Link} to={`/user/${comment.uid}`}>{comment.name}</Comment.Author>
         <Comment.Metadata>
-          <div>{formatTimestamp(comment.timestamp)}</div>
+          <div>{time}</div>
         </Comment.Metadata>
         <Comment.Text>{comment.reply}</Comment.Text>
       </Comment.Content>

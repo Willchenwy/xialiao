@@ -2,18 +2,18 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Card, Grid } from 'semantic-ui-react'
 import { ComposeContainer } from 'containers'
-import { LongLoading } from '../../helpers/loading'
+import { LongLoading } from 'helpers/loading'
 
-export default function MessageDetail ({message, isFetching, handleMessageReply, error}) {
+export default function MessageDetail ({message, isFetching, handleMessageReply, error, time}) {
   return (
     <Grid.Column width={12}>
       {isFetching === true
         ? <LongLoading />
         : error !== ''
           ? <p>error</p>
-          : <Card raised={true} fluid={true} style={{minHeight: '600px'}}>
+          : <Card raised={true} fluid={true} style={{minHeight: '500px'}}>
             <Card.Content style={{padding: '30px'}}>
-              <Card.Meta textAlign='right'>3 days ago</Card.Meta>
+              <Card.Meta textAlign='right'>{time}</Card.Meta>
               <Card.Header>{message.subject}</Card.Header>
               <Card.Meta>From {message.senderName} to me</Card.Meta>
               <Card.Description>
@@ -36,4 +36,5 @@ MessageDetail.propTypes = {
   message: PropTypes.any,
   isFetching: PropTypes.bool.isRequired,
   handleMessageReply: PropTypes.func.isRequired,
+  time: PropTypes.any,
 }
