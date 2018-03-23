@@ -88,6 +88,16 @@ export function listenToUsersUnread (uid, cb, errorCb) {
   }, errorCb)
 }
 
+export function removeUnreadListerner (uid) {
+  ref.child(`usersUnread/${uid}`).off('value')
+}
+export function removeUsersListerner () {
+  ref.child(`users`).off('value')
+}
+export function removeFeedListerner () {
+  ref.child(`ducks`).off('value')
+}
+
 export function listenToUsers (cb, errorCb) {
   let timesCalled = 0
   ref.child('users').on('value', (snapshot) => {

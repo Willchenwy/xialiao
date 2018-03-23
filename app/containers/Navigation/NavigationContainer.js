@@ -23,8 +23,9 @@ class NavigationContainer extends Component {
   }
 
   hendleLogout = (e) => {
+    const uid = this.props.authedUser.uid
     e.stopPropagation()
-    this.props.logout()
+    this.props.logout(uid)
   }
 
   onRead = (message) => {
@@ -73,7 +74,10 @@ function mapStateToProps ({authentication, router, unread, messages}) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators({setAndHandleUnreadListener, handleMessageRead, logout}, dispatch)
+  return bindActionCreators({
+    setAndHandleUnreadListener,
+    handleMessageRead,
+    logout}, dispatch)
 }
 
 export default connect(

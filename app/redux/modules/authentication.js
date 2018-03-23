@@ -2,6 +2,10 @@ import { loginUser, logoutUser, saveUser, signUpUser } from 'helpers/auth'
 import { formatUserInfo, randomAvatar } from 'helpers/utils'
 import { store } from '../../index'
 import { push } from 'react-router-redux'
+import { removeUnreadListerner,
+  removeUsersListerner,
+  removeFeedListerner,
+} from 'helpers/api'
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -112,12 +116,15 @@ export function signUp (email, password, displayName) {
   }
 }
 
-export function logout () {
+export function logout (uid) {
   return dispatch => {
     logoutUser()
       .then(
         () => {
           dispatch(logoutSuccess())
+          removeUnreadListerner(uid)
+          removeUsersListerner()
+          removeFeedListerner()
           store.dispatch(push('/'))
         }
       )

@@ -34,7 +34,7 @@ export default class Sent extends Component {
                         {`Subject: ${this.props.messages[id].subject} To: ${this.props.messages[id].receiverName}`}
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === idx}>
-                        <p>{this.props.messages[id].text}</p>
+                        <pre style={{whiteSpace: 'pre-wrap', fontFamily: 'Lato'}}>{this.props.messages[id].text}</pre>
                       </Accordion.Content>
                     </div>
                 )}
