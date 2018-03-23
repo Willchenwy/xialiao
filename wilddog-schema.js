@@ -3,6 +3,7 @@
 
 /users
   /uid
+    email
     name
     uid
     avatar
@@ -56,29 +57,38 @@
 /usersInbox
   /uid
     /messageId
-      senderId,
-      receiverId,
-      text,
-      subject,
-      timestamp,
       messageId
+      receiverId
+      receiverName
+      senderAvatar
+      senderId
+      senderName
+      subject
+      text
+      timestamp
 
 /usersSent
   /uid
     /messageId
-      senderId,
-      receiverId,
-      text,
-      subject,
-      timestamp,
       messageId
+      receiverId
+      receiverName
+      senderAvatar
+      senderId
+      senderName
+      subject
+      text
+      timestamp
   
 /usersUnread
   /uid
     /messageId
-      senderId,
-      receiverId,
-      text,
-      subject,
-      timestamp,
       messageId
+      receiverId
+      receiverName
+      senderAvatar
+      senderId
+      senderName
+      subject
+      text
+      timestamp

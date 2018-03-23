@@ -1,106 +1,78 @@
-// Reference for the redux schema (state)
-// Not valid JS and not used in the project
-
 {
+  router: {
+    location: null
+  },
   users: {
-    isAuthed,
-    isFetching
-    error,
-    authedId,
-    [uid]: {
-      lastUpdated,
-      info: {
-        name,
-        uid,
-        avatar
-      }
-    }
+    isSettingLintener: false,
+    isFetching: true,
+    error: '',
+    uids: []
   },
   modal: {
-    duck,
-    isOpen
+    isOpen: false,
+    duckText: ''
   },
   ducks: {
-    isFetching,
-    error
-    [duckId]: {
-      lastUpdated,
-      info: {
-        avatarm
-        duckId,
-        name,
-        text,
-        timestamp,
-        uid
-      }
-    }
-  },
-  likeCount: {
-    [duckId]: 0
+    isFetching: true,
+    error: ''
   },
   usersDucks: {
-    isFetching,
-    error,
-    [uid]: {
-      lastUpdated,
-      ducksIds: [...duckId]
-    }
-  },
-  usersLikes: {
-    duckId: true
+    isFetching: true,
+    error: ''
   },
   feed: {
-    isFetching,
-    error,
-    newDucksAvailable,
-    duckIdsToAdd: [...duckId],
-    duckIds: [...duckId]
+    newDucksAvailable: false,
+    newDucksToAdd: [],
+    isFetching: false,
+    error: '',
+    duckIds: []
+  },
+  listeners: {},
+  usersLikes: {
+    isFetching: false,
+    error: ''
+  },
+  likeCount: {
+    isFetching: false,
+    error: ''
   },
   replies: {
-    isFetching,
-    error,
-    [duckId]: {
-      lastUpdated,
-      replies: {
-        [replyId]: {
-          name,
-          reply,
-          uid,
-          timestamp,
-          avatar
-        }
-      }
-    }
+    isFetching: true,
+    error: ''
   },
-  listeners: {
-    [listenerId]: true，
+  newMessage: {
+    isFetching: false,
+    error: '',
+    dropdownOptions: [],
+    receiversInfo: []
   },
-  message: {
-    [messageId]: {
-      senderId,
-      receiverId,
-      text,
-      subject,
-      timestamp,
-      messageId,
-    }
-  }
-  inbox: {
-    isFetching,
-    error,
-    messageIds: [...messageId],
-  },
-  sent: {
-    isFetching,
-    error,
-    messageIds: [...messageId],
+  form: {},
+  messages: {
+    isFetching: true,
+    error: ''
   },
   unread: {
-    isFetching,
-    error,
-    messageIds: [...messageId],
-    localRead: {
-      messageId: true,
-    },
+    isFetching: false,
+    error: '',
+    messageIds: [],
+    localRead: {},
+    notification: []
+  },
+  inbox: {
+    isFetching: false,
+    error: '',
+    messageIds: []
+  },
+  sent: {
+    isFetching: false,
+    error: '',
+    messageIds: []
+  },
+  authentication: {
+    signingUp: false,
+    loggingIn: false,
+    loggedIn: false,
+    user: {},
+    error: ''
   }
 }
