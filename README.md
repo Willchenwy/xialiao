@@ -41,7 +41,7 @@ Xialiao(瞎聊) 是一个基于React的single-page application (SPA)社交应用
 git clone https://github.com/Willchenwy/xialiao.git
 cd xialiao
 ```
-<br>
+
 
 ### 安装依赖
 ```
@@ -49,19 +49,19 @@ npm install
 ```
 注意⚠️：请根据需要修改Wilddog(野狗)配置，默认配置有访问流量限制在到达上限时会造成数据库服务无法使用.  
 
-<br>
 
-### 本地开发环境运行 [http://localhost:8080/](http://localhost:8080)
+
+### 本地开发环境运行
 ```
 npm run start
 ```
-<br>
+[http://localhost:8080/](http://localhost:8080)
 
 ### 生产环境构建
 ```
 npm run build
 ```
-<br>
+
 
 # 部分功能演示
 提示：GIF分辨率较高，放大当前页面视图可获得更清晰图像
