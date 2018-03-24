@@ -43,7 +43,7 @@ cd xialiao
 ```
 <br>
 
-安装依赖
+### 安装依赖
 ```
 npm install
 ```
@@ -51,13 +51,13 @@ npm install
 
 <br>
 
-本地开发环境运行 [http://localhost:8080/](http://localhost:8080)
+### 本地开发环境运行 [http://localhost:8080/](http://localhost:8080)
 ```
 npm run start
 ```
 <br>
 
-生产环境构建
+### 生产环境构建
 ```
 npm run build
 ```
