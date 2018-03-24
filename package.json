@@ -31,6 +31,7 @@
     "redux-persist": "^5.9.1",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.3.0",
+    "semantic-ui-react": "^0.79.0",
     "wilddog": "^2.5.17"
   },
   "devDependencies": {
