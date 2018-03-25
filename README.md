@@ -4,6 +4,35 @@ Xialiao(瞎聊) 是一个基于React的single-page application (SPA)社交应用
 
 <br>
 
+# 运行
+
+```
+git clone https://github.com/Willchenwy/xialiao.git
+cd xialiao
+```
+
+
+### 安装依赖
+```
+npm install
+```
+注意⚠️：请根据需要修改Wilddog(野狗)配置，默认配置有访问流量限制在到达上限时会造成数据库服务无法使用.  
+
+
+
+### 本地开发环境运行
+```
+npm run start
+```
+[http://localhost:8080/](http://localhost:8080)
+
+### 生产环境构建
+```
+npm run build
+```
+
+<br>
+
 # 功能
 
 - [√] 用户注册，登陆，登出
@@ -33,35 +62,6 @@ Xialiao(瞎聊) 是一个基于React的single-page application (SPA)社交应用
 * [Webpack](https://webpack.js.org/) - 模块打包器
 * [Babel](https://babeljs.io/) - JavaScript 编译器，帮助使用最新的 JavaScript 特性
 * [ESLint](https://eslint.org/) - JavaScript 代码检测工具，帮助统一代码风格避免简单错误。
-
-<br>
-
-# 运行
-
-```
-git clone https://github.com/Willchenwy/xialiao.git
-cd xialiao
-```
-
-
-### 安装依赖
-```
-npm install
-```
-注意⚠️：请根据需要修改Wilddog(野狗)配置，默认配置有访问流量限制在到达上限时会造成数据库服务无法使用.  
-
-
-
-### 本地开发环境运行
-```
-npm run start
-```
-[http://localhost:8080/](http://localhost:8080)
-
-### 生产环境构建
-```
-npm run build
-```
 
 <br>
 
