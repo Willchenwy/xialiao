@@ -17,21 +17,22 @@ Xialiao(瞎聊) 是一个基于React的single-page application (SPA)社交应用
 - [√] 站内信即时推送
 - [√] 站内信未读通知
 - [√] 站内信回复
+- [√] 用户状态本地持久储存且跨设备实时同步
 
 <br>
 
 # 技术栈
 
-* [React](https://reactjs.org/) - 用于构建用户界面的 JavaScript 库。
-* [React Router](https://reacttraining.com/react-router/web/guides/philosophy) - 声明式 React 路由解决方案。
-* [Redux](https://redux.js.org/) - JavaScript 状态容器，提供可预测化的状态管理。
-* [Redux Persist](https://github.com/rt2zz/redux-persist) - Redux 状态存储和重构方案。
-* [Redux Thunk](https://github.com/gaearon/redux-thunk) - Redux 中间层，实现异步的 action dispatch。
-* [Semantic UI React](https://react.semantic-ui.com/introduction) - Semantic UI 对于 React 的集成方案。
+* [React](https://reactjs.org/) - 用于构建用户界面的 JavaScript 库
+* [React Router](https://reacttraining.com/react-router/web/guides/philosophy) - 声明式 React 路由解决方案
+* [Redux](https://redux.js.org/) - JavaScript 状态容器，提供可预测化的状态管理
+* [Redux Persist](https://github.com/rt2zz/redux-persist) - Redux 状态持久存储和重构方案
+* [Redux Thunk](https://github.com/gaearon/redux-thunk) - Redux 中间层，实现异步的 action dispatch
+* [Semantic UI React](https://react.semantic-ui.com/introduction) - Semantic UI 对于 React 的集成方案
 * [野狗(Wilddog)](https://react.semantic-ui.com/introduction) - 提供实时数据库服务
 * [Webpack](https://webpack.js.org/) - 模块打包器
-* [Babel](https://babeljs.io/) - JavaScript 编译器，允许用户使用最新的 JavaScript 特性。
-* [ESLint](https://eslint.org/) - JavaScript 代码检测工具，帮助统一代码风格避免简单错误。 
+* [Babel](https://babeljs.io/) - JavaScript 编译器，帮助使用最新的 JavaScript 特性
+* [ESLint](https://eslint.org/) - JavaScript 代码检测工具，帮助统一代码风格避免简单错误。
 
 <br>
 
