@@ -31,6 +31,12 @@ npm run start
 npm run build
 ```
 
+### 游客账号登陆
+```
+username: guest@xialiao.com
+password: 1234abcd
+```
+
 <br>
 
 # 功能
